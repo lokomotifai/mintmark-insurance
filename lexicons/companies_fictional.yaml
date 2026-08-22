@@ -1,0 +1,24 @@
+name: companies_fictional
+source_note: 'Corporate policyholder names. This is the pack''s natural VKN surface: the corporate
+  share carries a tax number in a field, which the retail banking pack has no equivalent for.'
+values:
+- Anka Lojistik
+- Meridyen Teknoloji
+- Toros Ticaret
+- Ege Yapi
+- Harman Gida
+- Safak Enerji
+- Pusula Egitim
+- Cinar Saglik Hizmetleri
+- Marmara Tekstil
+- Ilgaz Makine
+- Yelken Turizm
+- Zirve Otomotiv
+- Kervan Nakliyat
+- Selale Icecek
+- Ada Market
+- Nilufer Kimya
+- Gokce Ambalaj
+- Efe Mobilya
+- Tuna Elektronik
+- Serhat Insaat

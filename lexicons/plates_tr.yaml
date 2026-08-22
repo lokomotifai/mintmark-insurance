@@ -1,0 +1,26 @@
+name: plates_tr
+source_note: 'Vehicle plates. The two-digit province code is factual reference data: the standard
+  01 to 81 assignment, stable since the creation of Duzce in 1999, retrieved 2026-08-22. The letters
+  and digits after it are invented and follow no real registration series. Emitted unlabeled:
+  the pinned taxonomy has no PLATE label.'
+values:
+- 34 ANK 471
+- 06 MRD 203
+- 35 TRS 918
+- 16 PSL 355
+- 07 SFK 642
+- 01 BRK 127
+- 41 KZY 890
+- 26 EGE 514
+- 55 CNR 236
+- 61 DNZ 703
+- 27 YLK 481
+- 42 ZRV 159
+- 44 KRV 620
+- 31 SLL 347
+- 48 ADA 802
+- 20 NLF 573
+- 10 GKC 294
+- 33 EFE 716
+- 38 TNA 038
+- 54 SRH 465

@@ -1,0 +1,30 @@
+name: insurers_fictional
+source_note: Invented insurer names on the place-and-nature pattern the brief demonstrates. No
+  source register. Every entry is scanned against the real-institution denylist in required CI.
+values:
+- Anka Sigorta
+- Meridyen Sigorta
+- Toros Emeklilik ve Hayat
+- Ilgaz Sigorta
+- Pusula Sigorta
+- Safak Sigorta
+- Harman Sigorta
+- Kuzey Yildizi Sigorta
+- Marmara Sigorta
+- Ege Kiyi Sigorta
+- Cinar Sigorta
+- Deniz Kum Sigorta
+- Yelken Sigorta
+- Zirve Emeklilik
+- Ufuk Sigorta
+- Kervan Sigorta
+- Gokce Sigorta
+- Karadeniz Kiyi Sigorta
+- Efe Sigorta
+- Tuna Sigorta
+- Selale Sigorta
+- Ada Sigorta
+- Nilufer Sigorta
+- Serhat Emeklilik
+- Firtina Sigorta
+- Yamac Sigorta

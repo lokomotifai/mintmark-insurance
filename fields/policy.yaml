@@ -1,0 +1,40 @@
+schema_version: 1
+type_name: policy
+id_prefix: POL
+order: 2
+fields:
+  - {name: policy_id, type: str, generator: seq_id, pii_label: none}
+  - name: policyholder_id
+    type: ref
+    generator: seq_id
+    ref: {parent: policyholder, counts: [1, 2, 3, 4], weights: ["0.45", "0.30", "0.15", "0.10"]}
+    pii_label: none
+  - name: branch
+    type: enum
+    generator: enum_weighted
+    params:
+      values: [trafik, kasko, konut, dask, saglik, hayat, seyahat]
+      weights: ["0.30", "0.22", "0.14", "0.12", "0.10", "0.07", "0.05"]
+    pii_label: none
+  - {name: start_date, type: date, generator: datetime_window, pii_label: none}
+  - {name: end_date, type: date, generator: "derived:date_offset", params: {source: start_date, days: 365}, pii_label: none}
+  - {name: premium_kurus, type: int, generator: "int_lognormal_table:balances", pii_label: none}
+  - name: status
+    type: enum
+    generator: enum_weighted
+    params: {values: [aktif, sona_erdi, iptal], weights: ["0.80", "0.12", "0.08"]}
+    pii_label: none
+  - {name: agency_name, type: str, generator: "lexicon:agencies_fictional", pii_label: ORG}
+  # The pinned taxonomy has no PLATE label, so a plate is emitted unlabeled. That
+  # is settled by the brief rather than an oversight: labeling it ADDRESS would
+  # corrupt every evaluation the pii-eval dataset is used for, and adding a label
+  # outside the closed set fails closed. A test asserts this field stays unlabeled.
+  - {name: plate, type: str, generator: "lexicon:plates_tr", pii_label: none}
+  # No vehicle make or model field exists. The brand prohibition covers vehicle
+  # brands, so a vehicle is described by year and body type only.
+  - {name: vehicle_year, type: int, generator: int_uniform, params: {low: 2005, high: 2026}, pii_label: none}
+  - name: vehicle_body
+    type: enum
+    generator: enum_weighted
+    params: {values: [sedan, hatchback, suv, ticari], weights: ["0.38", "0.27", "0.22", "0.13"]}
+    pii_label: none

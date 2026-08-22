@@ -1,0 +1,8 @@
+schema_version: 1
+name: mintmark-insurance
+version: 0.1.0
+requires_core: ">=0.1,<0.2"
+locale: tr-TR
+allowed_identifier_policies: [safe, validator]
+description: Synthetic Turkish insurance policy and claim records with span-labeled documents.
+description_tr: Sentetik Turkce sigorta police ve hasar kayitlari ile etiketli belgeler.

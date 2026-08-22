@@ -1,0 +1,38 @@
+schema_version: 1
+name: pii-eval
+records:
+  policyholder: 900
+  policy: 900
+  claim: 400
+  payment: 900
+  claim_note: 0
+  call_transcript: 0
+  claim_note_eval: 1200
+  call_transcript_eval: 800
+date_window:
+  start: "2026-01-01T00:00:00+00:00"
+  end: "2026-12-31T23:59:59+00:00"
+doc_mix:
+  claim_notes_eval: "0.6"
+  call_transcripts_eval: "0.4"
+special_rate: "1"
+coverage_targets:
+  PERSON: 300
+  ADDRESS: 300
+  ORG: 300
+  DOB: 300
+  HEALTH: 300
+  RELIGION: 300
+  ETHNICITY: 300
+  POLITICAL: 300
+  SEXUAL_LIFE: 300
+  CRIMINAL: 300
+  BIOMETRIC_REF: 300
+  UNION: 300
+  TCKN: 500
+  VKN: 500
+  IBAN: 500
+  PAN: 500
+  PHONE: 500
+  EMAIL: 500
+identifier_policy: safe

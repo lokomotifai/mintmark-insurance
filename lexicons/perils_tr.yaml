@@ -1,0 +1,15 @@
+name: perils_tr
+source_note: Damage and event descriptors per branch, in neutral register. Invented.
+values:
+- carpma sonucu hasar
+- cam kirilmasi
+- su basmasi
+- yangin hasari
+- hirsizlik
+- dolu hasari
+- firtina hasari
+- elektrik kontagi
+- borusu patlamasi
+- cati sizintisi
+- park halinde hasar
+- zincirleme kaza

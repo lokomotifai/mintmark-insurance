@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 500" width="1200" height="500" role="img"
+     aria-label="Diagram of the insurance pack's record types. Four structured types across the top: policyholder, eighty five percent individual and fifteen percent corporate, carrying a national identity number for individuals and a tax number for companies; policy, one to four per policyholder, across seven branches, carrying a vehicle plate that is emitted unlabeled and no make or model field at all; claim, zero to two per policy, carrying claimed and paid amounts and a labeled anomaly kind; and payment, one, three or twelve per policy, carrying a masked card number when paid by card and an IBAN when paid by transfer. Two document types below in red, each producing a label sidecar: claim note of sixty to a hundred and eighty words, and call transcript with alternating turns. A band across the bottom states the health boundary: this pack touches a health branch and is not a clinical dataset, with no diagnosis, treatment, medication or prognosis.">
+  <title>What the insurance pack emits</title>
+  <desc>Four structured record types, two document types, and the health boundary stated across the bottom.</desc>
+    <rect width="1200" height="500" fill="#111111"/>
+  <text x="36" y="44" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="21" font-weight="600" fill="#FBFAF8" fill-opacity="0.95">What this pack emits</text>
+  <text x="36" y="68" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="13.5" fill="#FBFAF8" fill-opacity="0.5">Four structured types and two document types. The corporate share is what carries tax numbers.</text>
+  <rect x="36" y="96" width="270" height="122" rx="13" fill="#17191F" stroke="#FBFAF8" stroke-opacity="0.22" stroke-width="1.5"/>
+  <text x="52" y="123" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#FBFAF8" fill-opacity="0.95">policyholder</text>
+  <text x="52" y="141" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11.5" fill="#FBFAF8" fill-opacity="0.45">PH  ·  bireysel 0.85, kurumsal 0.15</text>
+  <text x="52" y="164" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">TCKN for individuals</text>
+  <text x="52" y="182" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">VKN for companies</text>
+  <text x="52" y="200" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">PERSON or ORG, never both</text>
+  <rect x="350" y="96" width="270" height="122" rx="13" fill="#17191F" stroke="#FBFAF8" stroke-opacity="0.22" stroke-width="1.5"/>
+  <text x="366" y="123" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#FBFAF8" fill-opacity="0.95">policy</text>
+  <text x="366" y="141" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11.5" fill="#FBFAF8" fill-opacity="0.45">POL  ·  1..4 per policyholder</text>
+  <text x="366" y="164" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">seven branches</text>
+  <text x="366" y="182" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">plate, unlabeled</text>
+  <text x="366" y="200" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">no make or model field</text>
+  <rect x="664" y="96" width="230" height="122" rx="13" fill="#17191F" stroke="#FBFAF8" stroke-opacity="0.22" stroke-width="1.5"/>
+  <text x="680" y="123" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#FBFAF8" fill-opacity="0.95">claim</text>
+  <text x="680" y="141" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11.5" fill="#FBFAF8" fill-opacity="0.45">CLM  ·  0..2 per policy</text>
+  <text x="680" y="164" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">claimed and paid</text>
+  <text x="680" y="182" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">a labeled anomaly kind</text>
+  <rect x="938" y="96" width="226" height="122" rx="13" fill="#17191F" stroke="#FBFAF8" stroke-opacity="0.22" stroke-width="1.5"/>
+  <text x="954" y="123" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#FBFAF8" fill-opacity="0.95">payment</text>
+  <text x="954" y="141" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11.5" fill="#FBFAF8" fill-opacity="0.45">PAY  ·  1, 3 or 12 per policy</text>
+  <text x="954" y="164" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">PAN when by card</text>
+  <text x="954" y="182" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">IBAN when by transfer</text>
+  <rect x="36" y="286" width="520" height="140" rx="13" fill="#17191F" stroke="#D11F26" stroke-opacity="0.55" stroke-width="1.5"/>
+  <text x="52" y="313" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#D11F26" fill-opacity="0.95">claim_note</text>
+  <text x="52" y="331" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11.5" fill="#FBFAF8" fill-opacity="0.45">CNT  ·  60 to 180 words</text>
+  <text x="52" y="354" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">ADDRESS, PERSON, IBAN, PHONE, a plate mention that stays unlabeled</text>
+  <text x="52" y="372" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">for the saglik branch, health stays at category granularity:</text>
+  <text x="52" y="390" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">a condition class and nothing more</text>
+  <rect x="600" y="286" width="564" height="140" rx="13" fill="#17191F" stroke="#D11F26" stroke-opacity="0.55" stroke-width="1.5"/>
+  <text x="616" y="313" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="15" font-weight="600" fill="#D11F26" fill-opacity="0.95">call_transcript</text>
+  <text x="616" y="331" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="11.5" fill="#FBFAF8" fill-opacity="0.45">CAL  ·  alternating turns</text>
+  <text x="616" y="354" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">renewal, claim status and cancellation intents</text>
+  <text x="616" y="372" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">verification patterns with partial identifiers,</text>
+  <text x="616" y="390" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#FBFAF8" fill-opacity="0.6">labeled with their parent label</text>
+  <rect x="36" y="446" width="1128" height="30" rx="8" fill="#17191F" stroke="#C98A2B" stroke-opacity="0.5" stroke-width="1.3"/>
+  <text x="52" y="466" font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="12.5" fill="#C98A2B" fill-opacity="0.9">The health boundary: this pack touches a health branch, and it is not a clinical dataset. No diagnosis, no treatment, no medication, no prognosis.</text>
+</svg>

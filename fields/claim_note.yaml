@@ -1,0 +1,20 @@
+schema_version: 1
+type_name: claim_note
+id_prefix: CNT
+order: 5
+fields:
+  - {name: claim_note_id, type: str, generator: seq_id, pii_label: none}
+  - name: claim_id
+    type: ref
+    generator: seq_id
+    ref: {parent: claim, counts: [0, 1], weights: ["0.6", "0.4"]}
+    pii_label: none
+  - name: author_role
+    type: enum
+    generator: enum_weighted
+    params:
+      values: [eksper, hasar_uzmani]
+      weights: ["0.55", "0.45"]
+    pii_label: none
+  - {name: created_ts, type: datetime, generator: datetime_window, pii_label: none}
+  - {name: body, type: doc, generator: "grammar:claim_notes", pii_label: none}
