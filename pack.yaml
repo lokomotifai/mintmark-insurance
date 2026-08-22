@@ -1,9 +1,15 @@
 schema_version: 1
 name: mintmark-insurance
-version: 0.1.2
-requires_core: ">=0.1,<0.2"
+version: 0.2.0
+requires_core: ">=0.2,<0.3"
 locale: tr-TR
-allowed_identifier_policies: [safe, validator]
+allowed_identifier_policies: [safe]
 description: Synthetic Turkish insurance policy and claim records with span-labeled documents.
 description_tr: Sentetik Turkce sigorta police ve hasar kayitlari ile etiketli belgeler.
+# Surfaces this pack adds to an entity label, appended after the core's
+# curated list. An insurance document names an insurer, an agency, or a
+# corporate insured, so all three feed ORG.
+entity_lexicons:
+  ADDRESS: [mahalleler_tr, sokaklar_tr]
+  ORG: [insurers_fictional, agencies_fictional, companies_fictional]
 dataset_license: CC-BY-4.0

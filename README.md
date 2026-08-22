@@ -15,7 +15,7 @@
   <a href="https://github.com/lokomotifai/mintmark-insurance/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/lokomotifai/mintmark-insurance/ci.yml?branch=main&amp;style=flat-square&amp;label=CI"></a>
   <img alt="Zero engine code" src="https://img.shields.io/badge/engine%20code-none-3C873A?style=flat-square">
   <img alt="18 of 18 coverage targets met" src="https://img.shields.io/badge/coverage%20targets-18%2F18-3C873A?style=flat-square">
-  <a href="https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.1.2"><img alt="Release v0.1.2" src="https://img.shields.io/badge/release-v0.1.2-3C873A?style=flat-square"></a>
+  <img alt="Release v0.2.0" src="https://img.shields.io/badge/release-v0.2.0-8A6412?style=flat-square">
   <a href="LICENSE"><img alt="Apache-2.0 license" src="https://img.shields.io/badge/license-Apache--2.0-3B3F46?style=flat-square"></a>
 </p>
 
@@ -50,9 +50,10 @@ mixes financial, behavioral, and health-adjacent personal data. None of it can
 move into a test environment without KVKK exposure. This pack declares that data,
 and the engine mints it: deterministic, span-labeled, and sealed by a manifest.
 
-**Version 0.1.2. Two reference datasets are published as assets on
-[v0.1.2](https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.1.2), each
-carrying its own manifest and checksums.** What is true today: `packcheck` passes against
+**Version 0.2.0, prepared and not tagged yet. Its reference datasets are minted
+from these declarations and attached to
+v0.2.0 when the tag
+is cut, each carrying its own manifest and checksums.** What is true today: `packcheck` passes against
 the pinned core, the test suite passes, and the evaluation recipe meets every one
 of its eighteen coverage targets.
 
@@ -137,14 +138,13 @@ mintmark verify ./run
 One claim note, as emitted:
 
 ```
-Hasar dosyasi notu. Olay yeri Barbaros Bulvarı olarak tespit
-edildi. Karsi taraf Mehmet Demir, iletisim +90 571 848 37 66.
-Sigortali 69833781436 numarali kisi, odeme icin
-TR899999905944328917518794 hesabini bildirdi. Arac plakasi
-hasar_uzmani tarafindan kayda gecirildi. Ekspertiz tamamlandi;
-hasar onarilabilir olarak degerlendirildi. Karsi tarafin
-sigortacisi Meridyen Teknoloji ile yazisma baslatildi. Dosya
-tamamlandi olarak guncellendi.
+Hasar dosyasi notu. Olay yeri Guzelyali Mahallesi olarak tespit
+edildi. Karsi taraf Zehra Kara, iletisim +90 559 641 52 09.
+Sigortali 28340880705 numarali kisi, odeme icin
+TR499999900496483948306278 hesabini bildirdi. Arac plakasi eksper
+tarafindan kayda gecirildi. Bildirilen hasar turu elektrik
+kontagi. Ekspertiz tamamlandi; hasar kismi olarak degerlendirildi.
+Dosya tamamlandi olarak guncellendi.
 ```
 
 That is the first record in [`samples/claim_note.jsonl`](samples/claim_note.jsonl),
@@ -159,24 +159,38 @@ retail, so VKN has to reach the data through document templates instead.
 
 | Label group | Target | Achieved |
 | --- | --- | --- |
-| PERSON, ADDRESS, ORG, DOB | 300 each | 2000 each |
-| The eight special categories | 300 each | 474 to 519 |
-| TCKN, VKN, IBAN, PAN, PHONE, EMAIL | 500 each | 2000 each |
+| PERSON, ADDRESS, ORG, DOB | 300 each | 1206 to 2000 |
+| The eight special categories | 300 each | 462 to 545 |
+| TCKN, VKN, IBAN, PAN, PHONE, EMAIL | 500 each | 811 to 2000 |
 
 Eight special-category labels at 300 spans each is 2400 injections across 2000
 documents, and this pack has only two document types to spread them over where
 banking has three. The evaluation templates are therefore a separate family at
 rate one with two special slots each, spread evenly across the labels.
 
-## The three recipes
+### What a document does not tell you about its record
+
+An identifier inside a document body is a fresh draw. `{id:TCKN}`, `{id:IBAN}`,
+`{id:PHONE}` and the person `{entity:PERSON}` names are drawn independently of the
+record the document is attached to, so a document linked to `PLH-00000123` names
+somebody else and cites a national identity number no policyholder row carries. The
+spans are still right: each one points at the surface it labels, and a detector
+scored on them is scored correctly.
+
+What this rules out is anything that needs the two sides to agree. Checking that a
+redaction pipeline gives one person the same pseudonym in a table and in prose, or
+that a control catches a document citing an identifier its master record does not
+hold, cannot be done with this data. It is stated here for the same reason the
+other structural losses are: it is invisible until somebody joins on it.
+
+## The two recipes
 
 | Recipe | Shape | For |
 | --- | --- | --- |
 | **portfolio-baseline** | 8 000 policyholders, about 16 000 policies, 2 700 claims, 40 000 payments, and 2 900 documents | Filling a test environment with something that behaves like a book of business |
 | **pii-eval** | 2 000 documents, every label above its target | Measuring a detector on Turkish insurance text |
-| **anomaly-mix** | The baseline plus a labeled anomaly field on every claim | Scoring a monitoring system against ground truth |
 
-### A limitation of anomaly-mix, stated plainly
+### A limitation of the anomaly fields, stated plainly
 
 Every claim carries `anomaly_kind` and `is_anomaly`, and the two never disagree.
 But the four kinds are **per-row labels drawn at declared rates, not genuine
@@ -185,7 +199,7 @@ several claims on one policy; here it is a label.
 
 That is a limit of the pack contract rather than an oversight: each field is drawn
 from an independent stream, so a pack cannot declare a pattern that correlates
-rows. Use this recipe to check that your pipeline carries labels through
+rows. Use these fields to check that your pipeline carries labels through
 correctly. Do not use it to measure whether a detector finds real patterns.
 
 ## A real insurer that reached a fictional list
@@ -217,7 +231,7 @@ full record is in
 ```
 pack.yaml           identity, the core pin, the allowed identifier policies
 fields/             one file per record type, in generation order
-recipes/            portfolio-baseline, pii-eval, anomaly-mix
+recipes/            portfolio-baseline, pii-eval
 templates/          baseline sets, and the separate evaluation sets
 lexicons/           invented insurers and agencies, the denylist, the clinical
                     vocabulary this pack refuses
@@ -241,11 +255,16 @@ All of it runs offline against the vendored core wheel.
 
 ## Project status
 
-Version 0.1.2, released. Two reference datasets are attached to
-[v0.1.2](https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.1.2), minted with the
-safe identifier policy at the seeds declared in
-[docs/reference-datasets.json](docs/reference-datasets.json). The engine is on PyPI as
-[`mintmark`](https://pypi.org/project/mintmark/).
+Version 0.2.0, not tagged yet. This version moves emitted bytes for a fixed seed,
+which this project family calls a major version event: the core began honouring
+template weights, and both the core and this pack widened the surface vocabularies
+a document draws from. The reference datasets attached to v0.1.2 stay valid and
+stay reproducible, with the core and pack versions their own manifests record. New
+ones are minted from these declarations at the seeds in
+[docs/reference-datasets.json](docs/reference-datasets.json) when the tag is cut.
+The engine is on PyPI as [`mintmark`](https://pypi.org/project/mintmark/), and the
+weekly pin check stays red until 0.2.0 is published there, which is accurate: a
+vendored core nobody else can fetch is a core nobody else can check.
 
 ## Community contract
 

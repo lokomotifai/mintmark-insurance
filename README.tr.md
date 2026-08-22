@@ -15,7 +15,7 @@
   <a href="https://github.com/lokomotifai/mintmark-insurance/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/lokomotifai/mintmark-insurance/ci.yml?branch=main&amp;style=flat-square&amp;label=CI"></a>
   <img alt="Sıfır motor kodu" src="https://img.shields.io/badge/motor%20kodu-yok-3C873A?style=flat-square">
   <img alt="18 kapsam hedefinin 18'i tutturuldu" src="https://img.shields.io/badge/kapsam%20hedefi-18%2F18-3C873A?style=flat-square">
-  <a href="https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.1.2"><img alt="Sürüm v0.1.2" src="https://img.shields.io/badge/sürüm-v0.1.2-3C873A?style=flat-square"></a>
+  <img alt="Sürüm v0.2.0" src="https://img.shields.io/badge/sürüm-v0.2.0-8A6412?style=flat-square">
   <a href="LICENSE"><img alt="Apache-2.0 lisansı" src="https://img.shields.io/badge/lisans-Apache--2.0-3B3F46?style=flat-square"></a>
 </p>
 
@@ -50,9 +50,10 @@ Hiçbiri KVKK riski alınmadan test ortamına taşınamaz. Bu paket o veriyi bey
 eder, motor da basar: deterministik, span düzeyinde etiketli ve bir manifestoyla
 mühürlenmiş.
 
-**Sürüm 0.1.2. İki referans veri kümesi
-[v0.1.2 sürümüne](https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.1.2) ekli olarak
-yayımlandı; her biri künyesini ve sağlamalarını taşıyor.** Bugün doğru olan: `packcheck` sabitlenmiş çekirdeğe karşı
+**Sürüm 0.2.0, hazırlandı ve henüz etiketlenmedi. Referans veri kümeleri bu
+bildirimlerden basılıp etiket kesildiğinde
+v0.2.0 sürümüne eklenecek;
+her biri künyesini ve sağlamalarını taşıyor.** Bugün doğru olan: `packcheck` sabitlenmiş çekirdeğe karşı
 geçiyor, test paketi geçiyor ve değerlendirme tarifi on sekiz kapsam hedefinin
 hepsini tutturuyor.
 
@@ -135,14 +136,13 @@ mintmark verify ./run
 Üretildiği hâliyle bir hasar notu:
 
 ```
-Hasar dosyasi notu. Olay yeri Barbaros Bulvarı olarak tespit
-edildi. Karsi taraf Mehmet Demir, iletisim +90 571 848 37 66.
-Sigortali 69833781436 numarali kisi, odeme icin
-TR899999905944328917518794 hesabini bildirdi. Arac plakasi
-hasar_uzmani tarafindan kayda gecirildi. Ekspertiz tamamlandi;
-hasar onarilabilir olarak degerlendirildi. Karsi tarafin
-sigortacisi Meridyen Teknoloji ile yazisma baslatildi. Dosya
-tamamlandi olarak guncellendi.
+Hasar dosyasi notu. Olay yeri Guzelyali Mahallesi olarak tespit
+edildi. Karsi taraf Zehra Kara, iletisim +90 559 641 52 09.
+Sigortali 28340880705 numarali kisi, odeme icin
+TR499999900496483948306278 hesabini bildirdi. Arac plakasi eksper
+tarafindan kayda gecirildi. Bildirilen hasar turu elektrik
+kontagi. Ekspertiz tamamlandi; hasar kismi olarak degerlendirildi.
+Dosya tamamlandi olarak guncellendi.
 ```
 
 Bu, [`samples/claim_note.jsonl`](samples/claim_note.jsonl) içindeki ilk kayıttır;
@@ -157,24 +157,38 @@ dolayısıyla VKN veriye belge şablonları üzerinden girmek zorundadır.
 
 | Etiket grubu | Hedef | Ulaşılan |
 | --- | --- | --- |
-| PERSON, ADDRESS, ORG, DOB | her biri 300 | her biri 2000 |
-| Sekiz özel nitelik | her biri 300 | 474 ilâ 519 |
-| TCKN, VKN, IBAN, PAN, PHONE, EMAIL | her biri 500 | her biri 2000 |
+| PERSON, ADDRESS, ORG, DOB | her biri 300 | 1206 ilâ 2000 |
+| Sekiz özel nitelik | her biri 300 | 462 ilâ 545 |
+| TCKN, VKN, IBAN, PAN, PHONE, EMAIL | her biri 500 | 811 ilâ 2000 |
 
 Sekiz özel nitelikli etiketin her birinden 300 span, 2000 belgede 2400 enjeksiyon
 demek; üstelik bu pakette bunları yayacak iki belge tipi var, bankacılıkta üç.
 Değerlendirme şablonları bu yüzden bir oranıyla ayrı bir aile: belge başına iki
 özel slot, etiketler eşit dağıtılmış.
 
-## Üç tarif
+### Bir belgenin bağlı olduğu kayıt hakkında söylemedikleri
+
+Belge gövdesindeki bir kimlik bilgisi taze bir çekimdir. `{id:TCKN}`, `{id:IBAN}`,
+`{id:PHONE}` ve `{entity:PERSON}` ile adlandırılan kişi, belgenin bağlı olduğu
+kayıttan bağımsız çekilir; bu yüzden `PLH-00000123` kaydına bağlı bir belge başka
+birini adlandırır ve hiçbir poliçe sahibi satırının taşımadığı bir kimlik numarası
+anar. Aralıklar yine doğrudur: her biri etiketlediği yüzeyi gösterir ve bunlar
+üzerinde puanlanan bir detektör doğru puanlanır.
+
+Bunun dışarıda bıraktığı şey, iki tarafın uyuşmasını gerektiren her testtir. Bir
+maskeleme hattının aynı kişiye tabloda ve düz metinde aynı takma adı verip
+vermediğini ya da bir kontrolün, ana kaydının taşımadığı bir kimliği anan belgeyi
+yakalayıp yakalamadığını bu veriyle sınayamazsınız. Burada yazılı olmasının
+sebebi diğer yapısal kayıplarla aynı: biri birleştirme yapana kadar görünmez.
+
+## İki tarif
 
 | Tarif | Şekil | Ne için |
 | --- | --- | --- |
 | **portfolio-baseline** | 8 000 poliçe sahibi, yaklaşık 16 000 poliçe, 2 700 hasar, 40 000 ödeme ve 2 900 belge | Bir test ortamını portföy gibi davranan bir şeyle doldurmak |
 | **pii-eval** | 2 000 belge, her etiket hedefinin üzerinde | Bir dedektörü Türkçe sigorta metninde ölçmek |
-| **anomaly-mix** | Taban artı her hasarda etiketli bir anomali alanı | Bir izleme sistemini gerçek referansa karşı puanlamak |
 
-### anomaly-mix'in açıkça belirtilen bir sınırı
+### Anomali alanlarının açıkça belirtilen bir sınırı
 
 Her hasar `anomaly_kind` ve `is_anomaly` taşır ve ikisi hiç çelişmez. Ancak dört
 tür, **beyan edilen oranlarda çekilmiş satır bazlı etiketlerdir; gerçek zamansal
@@ -211,7 +225,7 @@ sayfasının elle okunması sürüm kontrol listesine aittir. Tam kayıt
 ```
 pack.yaml           kimlik, çekirdek pini, izin verilen tanımlayıcı politikaları
 fields/             üretim sırasına göre kayıt tipi başına bir dosya
-recipes/            portfolio-baseline, pii-eval, anomaly-mix
+recipes/            portfolio-baseline, pii-eval
 templates/          taban setleri ve ayrı değerlendirme setleri
 lexicons/           uydurma sigortacılar ve acenteler, denylist, bu paketin
                     reddettiği klinik kelime dağarcığı
@@ -235,11 +249,17 @@ Hepsi vendor'lanmış çekirdek wheel'ine karşı çevrimdışı çalışır.
 
 ## Proje durumu
 
-Sürüm 0.1.2, yayımlandı. İki referans veri kümesi
-[v0.1.2](https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.1.2) sürümüne ekli;
-[docs/reference-datasets.json](docs/reference-datasets.json) içinde bildirilen
-tohumlarla ve güvenli kimlik politikasıyla üretildiler. Motor PyPI'de
-[`mintmark`](https://pypi.org/project/mintmark/) olarak yayımlanmıştır.
+Sürüm 0.2.0, henüz etiketlenmedi. Bu sürüm sabit bir tohum için üretilen baytları
+oynatıyor; bu depo ailesi buna ana sürüm olayı diyor: çekirdek şablon ağırlıklarını
+uygulamaya başladı ve hem çekirdek hem bu paket, bir belgenin çektiği yüzey
+dağarcığını genişletti. v0.1.2 sürümüne ekli referans veri kümeleri geçerli kalır
+ve kendi manifestlerinin kaydettiği çekirdek ve paket sürümleriyle yeniden
+üretilebilir olmayı sürdürür. Yenileri, etiket kesildiğinde bu bildirimlerden
+[docs/reference-datasets.json](docs/reference-datasets.json) içindeki tohumlarla
+basılır. Motor PyPI'da [`mintmark`](https://pypi.org/project/mintmark/) olarak
+duruyor ve haftalık sabitleme kontrolü 0.2.0 orada yayımlanana kadar kırmızı
+kalıyor; bu da doğru: başkasının çekemediği bir çekirdek, başkasının
+denetleyemediği bir çekirdektir.
 
 ## Topluluk sözleşmesi
 

@@ -4,7 +4,7 @@ entries:
   text: 'Temsilci: Iyi gunler, size nasil yardimci olabilirim? Musteri: {entity:PERSON} ben ariyorum,
     policemle ilgili bir sorum var. Temsilci: Kimlik dogrulamasi icin {id:TCKN} numaranizin son haneleri
     dogru mu? Musteri: Evet. Adresim {entity:ADDRESS}, telefonum {id:PHONE}. Temsilci: Policeniz (aktif|yenileme
-    asamasinda) gorunuyor. Musteri: (Yenileme|Hasar durumu|Iptal) icin aramistim. [?0.5: Temsilci: Odeme
+    asamasinda) gorunuyor. Musteri: (Yenileme|Hasar durumu|Iptal) icin aramistim[?0.5: ; {lex:perils_tr} konusunda bilgi almak istiyorum]. [?0.5: Temsilci: Odeme
     icin {id:IBAN} hesabinizi kullanabiliriz; eposta adresiniz {id:EMAIL} olarak kayitli.] Temsilci: Talebinizi
     kaydettim, en kisa surede donus yapilacaktir.'
 - id: call_with_note
@@ -12,7 +12,7 @@ entries:
   text: 'Temsilci: Iyi gunler, size nasil yardimci olabilirim? Musteri: {entity:PERSON} ben ariyorum,
     policemle ilgili bir sorum var. Temsilci: Kimlik dogrulamasi icin {id:TCKN} numaranizin son haneleri
     dogru mu? Musteri: Evet. Adresim {entity:ADDRESS}, telefonum {id:PHONE}. Temsilci: Policeniz (aktif|yenileme
-    asamasinda) gorunuyor. Musteri: (Yenileme|Hasar durumu|Iptal) icin aramistim. [?0.5: Temsilci: Odeme
+    asamasinda) gorunuyor. Musteri: (Yenileme|Hasar durumu|Iptal) icin aramistim[?0.5: ; {lex:perils_tr} konusunda bilgi almak istiyorum]. [?0.5: Temsilci: Odeme
     icin {id:IBAN} hesabinizi kullanabiliriz; eposta adresiniz {id:EMAIL} olarak kayitli.] Temsilci: Talebinizi
     kaydettim, en kisa surede donus yapilacaktir.[?special: Musteri: {entity:UNION} uyeligim uzerinden
     indirim tanimlanmis miydi?]'

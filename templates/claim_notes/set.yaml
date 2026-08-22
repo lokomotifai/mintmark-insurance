@@ -3,14 +3,14 @@ entries:
   weight: '0.6'
   text: 'Hasar dosyasi notu. Olay yeri {entity:ADDRESS} olarak tespit edildi. Karsi taraf {entity:PERSON},
     iletisim {id:PHONE}. Sigortali {id:TCKN} numarali kisi, odeme icin {id:IBAN} hesabini bildirdi. Arac
-    plakasi {field:claim_note.author_role} tarafindan kayda gecirildi. (Ekspertiz|Yerinde inceleme) tamamlandi;
+    plakasi {field:claim_note.author_role} tarafindan kayda gecirildi. Bildirilen hasar turu {lex:perils_tr}. (Ekspertiz|Yerinde inceleme) tamamlandi;
     hasar (kismi|onarilabilir|agir) olarak degerlendirildi. [?0.5: Karsi tarafin sigortacisi {entity:ORG}
     ile yazisma baslatildi.] Dosya (islemde|tamamlandi) olarak guncellendi.'
 - id: claim_with_note
   weight: '0.4'
   text: 'Hasar dosyasi notu. Olay yeri {entity:ADDRESS} olarak tespit edildi. Karsi taraf {entity:PERSON},
     iletisim {id:PHONE}. Sigortali {id:TCKN} numarali kisi, odeme icin {id:IBAN} hesabini bildirdi. Arac
-    plakasi {field:claim_note.author_role} tarafindan kayda gecirildi. (Ekspertiz|Yerinde inceleme) tamamlandi;
+    plakasi {field:claim_note.author_role} tarafindan kayda gecirildi. Bildirilen hasar turu {lex:perils_tr}. (Ekspertiz|Yerinde inceleme) tamamlandi;
     hasar (kismi|onarilabilir|agir) olarak degerlendirildi. [?0.5: Karsi tarafin sigortacisi {entity:ORG}
     ile yazisma baslatildi.] Dosya (islemde|tamamlandi) olarak guncellendi.[?special: Sigortalinin beyanina
     gore {entity:HEALTH} durumu nedeniyle olay yerinde ifade alinamadi.]'

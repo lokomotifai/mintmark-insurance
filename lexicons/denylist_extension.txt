@@ -1,4 +1,12 @@
-# Pack denylist extension. Inherits the core list in full and may only grow.
+# Pack denylist extension. One list across the pack family: the core's banks,
+# every real insurer, and every real holding and industrial company a fictional
+# name in any of these packs could land on. It may only grow.
+#
+# It is one list because the packs invent the same kinds of name. This pack
+# invents employers, the banking pack invents counterparties, the insurance pack
+# invents corporate insureds, and a list built for one of those cannot catch a
+# collision in another. Each pack scans its own lexicons, its own templates, and
+# its own minted output against this file rather than against the core's.
 #
 # Real Turkish financial institutions. A generated name must never collide
 # with any entry here. Packs may extend this list and may never shrink it.
@@ -143,3 +151,73 @@ turk pandi    # Turk Pandi Sigorta
 turkiye sigorta    # Turkiye Sigorta
 unico    # Unico Sigorta
 zurich    # Zurich Sigorta
+
+# Well-known real Turkish corporates and holdings.
+#
+# Added by the HR pack, whose invented employers are corporate names rather than
+# financial institutions, so neither the banking nor the insurance list covers
+# them.
+#
+# Source: a compilation of widely known Turkish corporates and holdings, checked
+# individually. Retrieved 2026-08-22. The exchange publishes the authoritative
+# listing, which was not available as a machine-readable public endpoint from
+# here; that limitation is recorded in docs/normative-verification.md rather than
+# papered over.
+#
+# A name whose distinctive part is an ordinary Turkish word keeps the whole
+# company name. The rule is checked against the core's own given-name, surname,
+# province, and street lexicons, because the first cut reduced `Dogan Holding` to
+# `dogan` and fired on every synthetic person named Dogan. A denylist that flags
+# the pack's own people is a denylist somebody switches off.
+
+akcansa    # Akcansa
+akfen    # Akfen Holding
+aksa akrilik    # Aksa Akrilik
+alarko    # Alarko Holding
+anadolu efes    # Anadolu Efes
+arcelik    # Arcelik
+aselsan    # Aselsan
+aygaz    # Aygaz
+bagfas    # Bagfas
+bim birlesik magazalar    # BIM Birlesik Magazalar
+borusan    # Borusan Holding
+brisa    # Brisa
+cimsa    # Cimsa
+dogan holding    # Dogan Holding
+eczacibasi    # Eczacibasi Holding
+enka insaat    # Enka Insaat
+eregli demir celik    # Eregli Demir Celik
+ford otosan    # Ford Otosan
+gubretas    # Gubretas
+hektas    # Hektas
+indeks bilgisayar    # Indeks Bilgisayar
+karsan otomotiv    # Karsan Otomotiv
+koc holding    # Koc Holding
+kordsa    # Kordsa
+logo yazilim    # Logo Yazilim
+migros    # Migros Ticaret
+netas    # Netas
+opet    # Opet
+otokar    # Otokar
+pegasus hava tasimaciligi    # Pegasus Hava Tasimaciligi
+petkim    # Petkim
+sabanci    # Sabanci Holding
+sasa polyester    # Sasa Polyester
+sisecam    # Sisecam
+soda sanayii    # Soda Sanayii
+sok marketler    # Sok Marketler
+tav havalimanlari    # TAV Havalimanlari
+tekfen    # Tekfen Holding
+tofas    # Tofas
+toros tarim    # Toros Tarim
+trakya cam    # Trakya Cam
+tupras    # Tupras
+turk hava yollari    # Turk Hava Yollari
+turk telekom    # Turk Telekom
+turk traktor    # Turk Traktor
+turkcell    # Turkcell
+turkiye petrol rafinerileri    # Turkiye Petrol Rafinerileri
+ulker biskuvi    # Ulker Biskuvi
+vestel    # Vestel
+yildiz holding    # Yildiz Holding
+zorlu    # Zorlu Holding
