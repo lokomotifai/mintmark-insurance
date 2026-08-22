@@ -10,9 +10,10 @@ output for a fixed seed. A change that alters emitted bytes for a fixed seed is 
 major version event even when no field moved, because it breaks the
 reproducibility of every published manifest.
 
-The pack version is part of the pack digest and the digest seeds the streams, so
-raising the version is itself such a change. Version and content correspond
-exactly, which is the point.
+The pack version is one of the six inputs every generation stream is derived
+from, so raising the version is itself such a change. Version and content
+correspond exactly, which is the point. The pack digest is a separate record of
+which declarations produced a dataset and seeds nothing.
 
 ## 0.1.2 - 2026-08-22
 
@@ -52,7 +53,8 @@ behind the owner's approval.
 
 ### About this version number
 
-This is the first published release and it is not 0.1.0. The pack version is part
-of the pack digest and the digest seeds the streams, so every declaration change
-during development moved the version with it. Versions 0.1.0 and 0.1.1 existed in
-this repository and were never published; nothing reproduces from them.
+This is the first published release and it is not 0.1.0. The pack version is one
+of the six inputs every generation stream is derived from, so every declaration
+change during development moved the version with it. Versions 0.1.0 and 0.1.1
+existed in this repository and were never published; nothing reproduces from
+them.
