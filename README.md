@@ -64,6 +64,8 @@ of its eighteen coverage targets.
 > coincide with assigned ones, because the Turkish numbering plan reserves no
 > fictional range. This data is for testing systems. It is never for contacting
 > anyone.
+> What this does and does not mean under Turkish data protection law is set
+> out in [docs/kvkk.md](docs/kvkk.md).
 
 ## What is in here, and what is not
 
@@ -134,12 +136,14 @@ mintmark verify ./run
 One claim note, as emitted:
 
 ```
-Hasar dosyasi notu. Olay yeri Lale Sokak olarak tespit edildi.
-Karsi taraf Emre Arslan, iletisim +90 532 088 32 86. Sigortali
-21604968396 numarali kisi, odeme icin TR129999906635627157091446
-hesabini bildirdi. Arac plakasi eksper tarafindan kayda gecirildi.
-Ekspertiz tamamlandi; hasar onarilabilir olarak degerlendirildi.
-Dosya tamamlandi olarak guncellendi.
+Hasar dosyasi notu. Olay yeri Barbaros Bulvarı olarak tespit
+edildi. Karsi taraf Mehmet Demir, iletisim +90 571 848 37 66.
+Sigortali 69833781436 numarali kisi, odeme icin
+TR899999905944328917518794 hesabini bildirdi. Arac plakasi
+hasar_uzmani tarafindan kayda gecirildi. Ekspertiz tamamlandi;
+hasar onarilabilir olarak degerlendirildi. Karsi tarafin
+sigortacisi Meridyen Teknoloji ile yazisma baslatildi. Dosya
+tamamlandi olarak guncellendi.
 ```
 
 That is the first record in [`samples/claim_note.jsonl`](samples/claim_note.jsonl),
@@ -219,7 +223,8 @@ lexicons/           invented insurers and agencies, the denylist, the clinical
 samples/            fifty records per type, regenerated from a fixed seed
 vendor/             the core wheel required CI runs against, recorded by checksum
 tests/              the conformance suite, including the health boundary check
-docs/               the reference dataset record and the verification record
+docs/               the reference dataset record, the verification record, and
+                    what this pack does and does not claim under KVKK
 ```
 
 ## Develop the repository
@@ -254,7 +259,10 @@ license agreement. See [CONTRIBUTING.md](CONTRIBUTING.md),
 Apache-2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE). The license grants no
 right to the Mintmark name or logo; see [TRADEMARKS.md](TRADEMARKS.md).
 
-The dataset license for published reference datasets is proposed as CC0-1.0 and
-is pending legal confirmation.
+Reference datasets are licensed **CC BY 4.0**: use them for anything, including
+commercially, and credit the source. Every dataset carries its own credit line in
+`MINTMARK.json` and `mintmark verify` prints it, so nothing has to be assembled by
+hand. See [LICENSE-DATASETS.md](LICENSE-DATASETS.md). Pending legal confirmation;
+nothing here states it as settled.
 
 <p align="center"><sub>Part of the Mintmark family: <a href="https://github.com/lokomotifai/mintmark">the engine</a> · <a href="https://github.com/lokomotifai/mintmark-banking">banking</a> · <a href="https://github.com/lokomotifai/mintmark-hr">human resources</a></sub></p>

@@ -1,0 +1,32 @@
+# Citation metadata, in Citation File Format 1.2.0.
+# GitHub renders this as "Cite this repository".
+#
+# No release has been published and there is no DOI. `version` names the
+# current unreleased version so a citation is unambiguous about what it saw.
+#
+# `license` is the code license. Datasets minted from this repository carry
+# CC-BY-4.0, which is recorded in LICENSE-DATASETS.md and written into every
+# manifest. The format has one license field, so this is the one it holds.
+
+cff-version: 1.2.0
+message: If you use this work, please cite it as below.
+title: 'Mintmark insurance: synthetic Turkish policy and claim records'
+abstract: 'Declaration-and-data pack producing synthetic Turkish insurance records: policyholders,
+  policies, claims, payments, and free-text claim notes and call transcripts. Includes a health
+  branch held at category granularity by two controls. Not clinical data. Requires the Mintmark
+  engine.'
+type: dataset
+version: 0.1.2
+authors:
+- family-names: Guner
+  given-names: Fatih
+  alias: fatihguner
+repository-code: https://github.com/lokomotifai/mintmark-insurance
+license: Apache-2.0
+keywords:
+- synthetic data
+- Turkish
+- insurance
+- KVKK
+- named entity recognition
+- special category data

@@ -64,6 +64,8 @@ hepsini tutturuyor.
 > numaralarla çakışabilir, çünkü Türkiye numara planı kurgusal bir aralık ayırmaz.
 > Bu veri sistemleri test etmek içindir. Hiçbir zaman kimseye ulaşmak için
 > değildir.
+> Bunun Türk veri koruma hukuku karşısında ne anlama gelip gelmediği
+> [docs/kvkk.tr.md](docs/kvkk.tr.md) dosyasında açıklanmıştır.
 
 ## Burada ne var, ne yok
 
@@ -132,12 +134,14 @@ mintmark verify ./run
 Üretildiği hâliyle bir hasar notu:
 
 ```
-Hasar dosyasi notu. Olay yeri Lale Sokak olarak tespit edildi.
-Karsi taraf Emre Arslan, iletisim +90 532 088 32 86. Sigortali
-21604968396 numarali kisi, odeme icin TR129999906635627157091446
-hesabini bildirdi. Arac plakasi eksper tarafindan kayda gecirildi.
-Ekspertiz tamamlandi; hasar onarilabilir olarak degerlendirildi.
-Dosya tamamlandi olarak guncellendi.
+Hasar dosyasi notu. Olay yeri Barbaros Bulvarı olarak tespit
+edildi. Karsi taraf Mehmet Demir, iletisim +90 571 848 37 66.
+Sigortali 69833781436 numarali kisi, odeme icin
+TR899999905944328917518794 hesabini bildirdi. Arac plakasi
+hasar_uzmani tarafindan kayda gecirildi. Ekspertiz tamamlandi;
+hasar onarilabilir olarak degerlendirildi. Karsi tarafin
+sigortacisi Meridyen Teknoloji ile yazisma baslatildi. Dosya
+tamamlandi olarak guncellendi.
 ```
 
 Bu, [`samples/claim_note.jsonl`](samples/claim_note.jsonl) içindeki ilk kayıttır;
@@ -213,7 +217,8 @@ lexicons/           uydurma sigortacılar ve acenteler, denylist, bu paketin
 samples/            tip başına elli kayıt, sabit tohumdan yeniden üretilir
 vendor/             zorunlu CI'ın karşı koştuğu çekirdek wheel, özetiyle kayıtlı
 tests/              uygunluk paketi, sağlık sınırı kontrolü dahil
-docs/               referans veri kümesi kaydı ve doğrulama kaydı
+docs/               referans veri kümesi kaydı, doğrulama kaydı ve bu paketin
+                    KVKK karşısında ne iddia edip etmediği
 ```
 
 ## Depoyu geliştirin
@@ -248,7 +253,11 @@ kapsamında. Bakınız [CONTRIBUTING.md](CONTRIBUTING.md),
 Apache-2.0. Bakınız [LICENSE](LICENSE) ve [NOTICE](NOTICE). Lisans, Mintmark adı
 veya logosu üzerinde hiçbir hak vermez; bakınız [TRADEMARKS.md](TRADEMARKS.md).
 
-Yayımlanan referans veri kümeleri için veri seti lisansı CC0-1.0 olarak
-önerilmiştir ve hukuk teyidi beklemektedir.
+Referans veri kümeleri **CC BY 4.0** ile lisanslıdır: ticari kullanım dahil her
+amaçla kullanabilirsiniz, kaynağı belirtmeniz yeterlidir. Her veri kümesi kendi
+atıf satırını `MINTMARK.json` içinde taşır ve `mintmark verify` bunu yazdırır;
+elle bir şey kurmanız gerekmez. Bakınız
+[LICENSE-DATASETS.md](LICENSE-DATASETS.md). Hukuki teyit beklemektedir; burada
+hiçbir şey bunu yerleşik olarak belirtmez.
 
 <p align="center"><sub>Mintmark ailesinin parçası: <a href="https://github.com/lokomotifai/mintmark">çekirdek</a> · <a href="https://github.com/lokomotifai/mintmark-banking">bankacılık</a> · <a href="https://github.com/lokomotifai/mintmark-hr">insan kaynakları</a></sub></p>
