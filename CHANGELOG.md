@@ -14,7 +14,7 @@ The pack version is part of the pack digest and the digest seeds the streams, so
 raising the version is itself such a change. Version and content correspond
 exactly, which is the point.
 
-## Unreleased
+## 0.1.2 - 2026-08-22
 
 ### Added
 
@@ -50,3 +50,9 @@ Nothing has been released. The reference datasets are declared in
 `docs/reference-datasets.json` with their settled seeds; publishing them sits
 behind the owner's approval.
 
+### About this version number
+
+This is the first published release and it is not 0.1.0. The pack version is part
+of the pack digest and the digest seeds the streams, so every declaration change
+during development moved the version with it. Versions 0.1.0 and 0.1.1 existed in
+this repository and were never published; nothing reproduces from them.
