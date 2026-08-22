@@ -125,8 +125,7 @@ is stated here rather than discovered after ingest.
 ## Mint it yourself
 
 ```bash
-# The engine is not on PyPI yet; install it from the repository.
-uv tool install git+https://github.com/lokomotifai/mintmark
+uv tool install mintmark
 git clone https://github.com/lokomotifai/mintmark-insurance
 cd mintmark-insurance
 
@@ -245,8 +244,8 @@ All of it runs offline against the vendored core wheel.
 Version 0.1.2, released. Two reference datasets are attached to
 [v0.1.2](https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.1.2), minted with the
 safe identifier policy at the seeds declared in
-[docs/reference-datasets.json](docs/reference-datasets.json). The engine is not on
-PyPI yet, so install it from its repository.
+[docs/reference-datasets.json](docs/reference-datasets.json). The engine is on PyPI as
+[`mintmark`](https://pypi.org/project/mintmark/).
 
 ## Community contract
 
