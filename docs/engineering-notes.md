@@ -73,3 +73,31 @@ of the association's own page belongs in the release checklist.
       --out ./regenerated
 
 Then copy the JSONL files into `samples/`. The freshness test compares by bytes.
+
+## Why birth dates carry an age window
+
+`birth_date` used to be a plain `datetime_window` draw, which meant every person
+in a dataset describing 2026 was also born in 2026. Nothing in the suite caught
+it: the field is a valid date, the label is right, the span aligns, the manifest
+verifies. It is only wrong to a reader, which is the one check that had not run.
+
+The field now declares `params: {age_years: [18, 90]}`, and the core draws from
+the span that would give a person that age at the start of the recipe window. The
+parameter is optional and a field that omits it behaves exactly as before, so no
+other declaration in the family had to move.
+
+Adopting it moved emitted bytes for a fixed seed, so the samples were regenerated
+and the pack version went to 0.1.1. That is the rule this pack already had for
+lexicon growth, applied to a declaration change.
+
+## A version bump changes every emitted byte
+
+The pack version is part of the pack digest, and the digest seeds the streams. So
+raising `version` in `pack.yaml` changes every value in every record for a fixed
+seed, and the sample freshness test fails until the samples are regenerated.
+
+That reads like a bug the first time it happens. It is the opposite: version and
+content correspond exactly, so two datasets carrying the same pack version cannot
+differ, and nobody can quietly change what a version emits. The cost is that a
+bump is never free for anyone holding a published manifest, which is the reason
+the family treats one as a decision rather than a formality.

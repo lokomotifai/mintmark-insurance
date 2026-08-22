@@ -1,6 +1,6 @@
 schema_version: 1
 name: mintmark-insurance
-version: 0.1.0
+version: 0.1.1
 requires_core: ">=0.1,<0.2"
 locale: tr-TR
 allowed_identifier_policies: [safe, validator]

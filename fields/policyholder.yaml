@@ -14,7 +14,10 @@ fields:
   - {name: company_name, type: str, generator: "lexicon:companies_fictional", pii_label: ORG}
   - {name: national_id, type: str, generator: "identifier:TCKN", pii_label: TCKN}
   - {name: tax_id, type: str, generator: "identifier:VKN", pii_label: VKN}
-  - {name: birth_date, type: date, generator: datetime_window, pii_label: DOB}
+  # Drawn from the span that gives a person this age at the start of the
+  # recipe window. A policyholder is an adult; the upper bound is a plausible span rather than a rule.
+  - {name: birth_date, type: date, generator: datetime_window,
+     params: {age_years: [18, 90]}, pii_label: DOB}
   - {name: email, type: str, generator: "derived:email_from_name", pii_label: EMAIL}
   - {name: phone, type: str, generator: "identifier:PHONE", pii_label: PHONE}
   - {name: il, type: str, generator: "lexicon:provinces_tr", pii_label: ADDRESS}

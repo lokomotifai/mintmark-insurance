@@ -543,3 +543,49 @@ def test_the_denied_list_would_catch_a_planted_term() -> None:
     denied = parse("\n".join(f"{term}    # denied clinical vocabulary" for term in denied_terms()))
     planted = "Sigortalinin dosyasina kemoterapi tedavisi notu islendi."
     assert denied.scan(planted), "the denied list no longer catches an obvious term"
+
+
+# What a version bump costs.
+
+
+def test_the_pack_version_is_part_of_what_seeds_the_streams(tmp_path: Path) -> None:
+    """Bumping the version changes every emitted byte for a fixed seed.
+
+    The version is part of the pack digest and the digest seeds the streams, so
+    version and content correspond exactly: two datasets carrying the same pack
+    version cannot differ, and a bump is never a no-op for anyone holding a
+    published manifest. Worth a test because it is surprising, and because the
+    sample freshness failure it causes reads like a bug until you know why.
+    """
+    import shutil
+
+    rolled_back = tmp_path / "rolled-back"
+    shutil.copytree(
+        ROOT,
+        rolled_back,
+        ignore=shutil.ignore_patterns(".venv", ".git", ".pytest_cache", "samples", "dist"),
+    )
+    manifest = rolled_back / "pack.yaml"
+    manifest.write_text(
+        manifest.read_text(encoding="utf-8").replace(
+            f"version: {PACK.version}", "version: 9.9.9"
+        ),
+        encoding="utf-8",
+    )
+
+    out = tmp_path / "probe"
+    mint(
+        pack=rolled_back,
+        recipe="portfolio-baseline",
+        seed=1,
+        out=out,
+        records={"policyholder": 20},
+        invocation="pytest",
+    )
+    changed = (out / "policyholder.jsonl").read_bytes()
+    committed = (ROOT / "samples" / "policyholder.jsonl").read_bytes()
+    assert not committed.startswith(changed[:200]), (
+        "a different pack version produced identical bytes, so the version is no "
+        "longer part of the digest and two datasets can now share a version while "
+        "differing in content"
+    )

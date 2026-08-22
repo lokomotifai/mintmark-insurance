@@ -132,10 +132,12 @@ mintmark verify ./run
 Üretildiği hâliyle bir hasar notu:
 
 ```
-Hasar dosyasi notu. Olay yeri Çınar Sokak olarak tespit edildi. Karsi
-taraf Kemal Kılıç, iletisim +90 504 822 44 34. Sigortali 32493027203
-numarali kisi, odeme icin TR919999905512934097477394 hesabini bildirdi.
-Arac plakasi.
+Hasar dosyasi notu. Olay yeri Lale Sokak olarak tespit edildi.
+Karsi taraf Emre Arslan, iletisim +90 532 088 32 86. Sigortali
+21604968396 numarali kisi, odeme icin TR129999906635627157091446
+hesabini bildirdi. Arac plakasi eksper tarafindan kayda gecirildi.
+Ekspertiz tamamlandi; hasar onarilabilir olarak degerlendirildi.
+Dosya tamamlandi olarak guncellendi.
 ```
 
 Bu, [`samples/claim_note.jsonl`](samples/claim_note.jsonl) içindeki ilk kayıttır;
