@@ -15,12 +15,12 @@
   <a href="https://github.com/lokomotifai/mintmark-insurance/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/lokomotifai/mintmark-insurance/ci.yml?branch=main&amp;style=flat-square&amp;label=CI"></a>
   <img alt="Sıfır motor kodu" src="https://img.shields.io/badge/motor%20kodu-yok-3C873A?style=flat-square">
   <img alt="18 kapsam hedefinin 18'i tutturuldu" src="https://img.shields.io/badge/kapsam%20hedefi-18%2F18-3C873A?style=flat-square">
-  <img alt="Sürüm v0.2.0" src="https://img.shields.io/badge/sürüm-v0.2.0-8A6412?style=flat-square">
+  <a href="https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.2.0"><img alt="Sürüm v0.2.0" src="https://img.shields.io/badge/sürüm-v0.2.0-8A6412?style=flat-square"></a>
   <a href="LICENSE"><img alt="Apache-2.0 lisansı" src="https://img.shields.io/badge/lisans-Apache--2.0-3B3F46?style=flat-square"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/lokomotifai/mintmark"><img alt="Mintmark çekirdeğini gerektirir" src="https://img.shields.io/badge/çekirdek-%3E%3D0.1%2C%3C0.2-17191F?style=flat-square"></a>
+  <a href="https://github.com/lokomotifai/mintmark"><img alt="Mintmark çekirdeğini gerektirir" src="https://img.shields.io/badge/çekirdek-%3E%3D0.3%2C%3C0.4-17191F?style=flat-square"></a>
   <img alt="Altı kayıt tipi" src="https://img.shields.io/badge/kayıt%20tipi-6-17191F?style=flat-square">
   <img alt="Yedi sigorta branşı" src="https://img.shields.io/badge/branş-7-17191F?style=flat-square">
   <img alt="26 kurgusal sigortacı adı" src="https://img.shields.io/badge/kurgusal%20sigortaci-26-D11F26?style=flat-square">
@@ -50,18 +50,17 @@ Hiçbiri KVKK riski alınmadan test ortamına taşınamaz. Bu paket o veriyi bey
 eder, motor da basar: deterministik, span düzeyinde etiketli ve bir manifestoyla
 mühürlenmiş.
 
-**Sürüm 0.2.0, hazırlandı ve henüz etiketlenmedi. Referans veri kümeleri bu
-bildirimlerden basılıp etiket kesildiğinde
-v0.2.0 sürümüne eklenecek;
-her biri künyesini ve sağlamalarını taşıyor.** Bugün doğru olan: `packcheck` sabitlenmiş çekirdeğe karşı
-geçiyor, test paketi geçiyor ve değerlendirme tarifi on sekiz kapsam hedefinin
-hepsini tutturuyor.
+**Sürüm 0.2.0. Referans veri kümeleri
+[v0.2.0 sürümüne](https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.2.0)
+eklenmiştir; her biri kendi künyesini ve sağlamalarını taşır.** `packcheck`
+sabitlenmiş çekirdeğe karşı geçiyor, test paketi geçiyor ve değerlendirme tarifi
+on sekiz kapsam hedefinin hepsini tutturuyor.
 
 > [!IMPORTANT]
 > **Bu paket ne değildir.** Poliçe verinizin anonimleştirilmesi değildir; hiç veri
 > almaz. Uyumluluk garantisi değildir, hukuki güvenli liman değildir. **Klinik veri
 > değildir ve onun yerine geçmez**: sağlık branşı tasarım gereği kategori
-> granülerliğinde kalır. Anomali tarifi dedektör tarafı test verisidir ve bu depo
+> granülerliğinde kalır. Anomali etiketleri dedektör tarafı test verisidir ve bu depo
 > hiçbir atlatma rehberliği içermez. Üretilen telefon numaraları atanmış
 > numaralarla çakışabilir, çünkü Türkiye numara planı kurgusal bir aralık ayırmaz.
 > Bu veri sistemleri test etmek içindir. Hiçbir zaman kimseye ulaşmak için
@@ -249,17 +248,18 @@ Hepsi vendor'lanmış çekirdek wheel'ine karşı çevrimdışı çalışır.
 
 ## Proje durumu
 
-Sürüm 0.2.0, henüz etiketlenmedi. Bu sürüm sabit bir tohum için üretilen baytları
+Sürüm 0.2.0 yayımlanmıştır. Referans veri kümeleri
+[v0.2.0](https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.2.0)
+sürümüne eklenmiştir. Bu sürüm sabit bir tohum için üretilen baytları
 oynatıyor; bu depo ailesi buna ana sürüm olayı diyor: çekirdek şablon ağırlıklarını
 uygulamaya başladı ve hem çekirdek hem bu paket, bir belgenin çektiği yüzey
 dağarcığını genişletti. v0.1.2 sürümüne ekli referans veri kümeleri geçerli kalır
 ve kendi manifestlerinin kaydettiği çekirdek ve paket sürümleriyle yeniden
-üretilebilir olmayı sürdürür. Yenileri, etiket kesildiğinde bu bildirimlerden
+üretilebilir olmayı sürdürür. v0.2.0 veri kümeleri bu bildirimlerden
 [docs/reference-datasets.json](docs/reference-datasets.json) içindeki tohumlarla
-basılır. Motor PyPI'da [`mintmark`](https://pypi.org/project/mintmark/) olarak
-duruyor ve haftalık sabitleme kontrolü 0.2.0 orada yayımlanana kadar kırmızı
-kalıyor; bu da doğru: başkasının çekemediği bir çekirdek, başkasının
-denetleyemediği bir çekirdektir.
+basılmıştır. Motor PyPI'da [`mintmark`](https://pypi.org/project/mintmark/) olarak
+duruyor. Haftalık sabitleme kontrolü vendor'lanmış wheel'i değişmez, denetlenmiş
+kaynak revizyonundan yeniden derler ve baytların birebir eşleşmesini zorunlu kılar.
 
 ## Topluluk sözleşmesi
 
@@ -278,7 +278,6 @@ Referans veri kümeleri **CC BY 4.0** ile lisanslıdır: ticari kullanım dahil 
 amaçla kullanabilirsiniz, kaynağı belirtmeniz yeterlidir. Her veri kümesi kendi
 atıf satırını `MINTMARK.json` içinde taşır ve `mintmark verify` bunu yazdırır;
 elle bir şey kurmanız gerekmez. Bakınız
-[LICENSE-DATASETS.md](LICENSE-DATASETS.md). Hukuki teyit beklemektedir; burada
-hiçbir şey bunu yerleşik olarak belirtmez.
+[LICENSE-DATASETS.md](LICENSE-DATASETS.md).
 
 <p align="center"><sub>Mintmark ailesinin parçası: <a href="https://github.com/lokomotifai/mintmark">çekirdek</a> · <a href="https://github.com/lokomotifai/mintmark-banking">bankacılık</a> · <a href="https://github.com/lokomotifai/mintmark-hr">insan kaynakları</a></sub></p>

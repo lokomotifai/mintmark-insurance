@@ -1,7 +1,7 @@
 schema_version: 1
 name: mintmark-insurance
 version: 0.2.0
-requires_core: ">=0.2,<0.3"
+requires_core: ">=0.3,<0.4"
 locale: tr-TR
 allowed_identifier_policies: [safe]
 description: Synthetic Turkish insurance policy and claim records with span-labeled documents.

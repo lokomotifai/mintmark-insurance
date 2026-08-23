@@ -10,8 +10,8 @@ from __future__ import annotations
 import json
 import re
 import subprocess
-import tempfile
 import sys
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -73,11 +73,11 @@ def test_the_pack_name_matches_the_repository() -> None:
 
 def test_the_core_pin_has_a_closed_upper_bound() -> None:
     """An open pin lets a future core change what a published manifest reproduces."""
-    assert PACK.requires_core.text == ">=0.2,<0.3"
-    assert PACK.requires_core.contains("0.2.0")
-    assert not PACK.requires_core.contains("0.3.0")
-    assert not PACK.requires_core.contains("0.1.3"), (
-        "0.1.x moved emitted bytes relative to 0.2.0; a pin that spans both is not a pin"
+    assert PACK.requires_core.text == ">=0.3,<0.4"
+    assert PACK.requires_core.contains("0.3.0")
+    assert not PACK.requires_core.contains("0.4.0")
+    assert not PACK.requires_core.contains("0.2.0"), (
+        "0.2.x lacks the complete audited safety contract required by this pack"
     )
 
 
@@ -307,6 +307,33 @@ def test_every_reference_resolves(minted: Path) -> None:
             assert json.loads(line)["policy_id"] in policies
 
 
+def test_every_parent_respects_declared_relationship_bounds(minted: Path) -> None:
+    policyholders = [
+        json.loads(line) for line in (minted / "policyholder.jsonl").read_text().splitlines()
+    ]
+    policies = [json.loads(line) for line in (minted / "policy.jsonl").read_text().splitlines()]
+    claims = [json.loads(line) for line in (minted / "claim.jsonl").read_text().splitlines()]
+    payments = [json.loads(line) for line in (minted / "payment.jsonl").read_text().splitlines()]
+
+    policies_per_holder = {
+        holder["policyholder_id"]: sum(
+            row["policyholder_id"] == holder["policyholder_id"] for row in policies
+        )
+        for holder in policyholders
+    }
+    claims_per_policy = {
+        policy["policy_id"]: sum(row["policy_id"] == policy["policy_id"] for row in claims)
+        for policy in policies
+    }
+    payments_per_policy = {
+        policy["policy_id"]: sum(row["policy_id"] == policy["policy_id"] for row in payments)
+        for policy in policies
+    }
+    assert all(1 <= count <= 4 for count in policies_per_holder.values())
+    assert all(0 <= count <= 2 for count in claims_per_policy.values())
+    assert all(1 <= count <= 12 for count in payments_per_policy.values())
+
+
 def test_pans_are_emitted_masked(minted: Path) -> None:
     for line in (minted / "payment.jsonl").read_text(encoding="utf-8").splitlines():
         value = json.loads(line)["pan_masked"]
@@ -321,10 +348,10 @@ def test_the_anomaly_flag_never_disagrees_with_the_kind(tmp_path: Path) -> None:
         seed=1,
         out=out,
         records={
-            "policyholder": 60,
-            "policy": 400,
+            "policyholder": 200,
+            "policy": 750,
             "claim": 1500,
-            "payment": 300,
+            "payment": 750,
             "claim_note": 10,
             "call_transcript": 10,
         },
@@ -459,16 +486,18 @@ def test_each_readme_names_the_release_state_truthfully(path: Path) -> None:
     real state too, and the README may hold it by saying so.
     """
     text = path.read_text(encoding="utf-8")
-    linked = set(re.findall(r"/releases/tag/v(\d+\.\d+\.\d+)", text))
-    assert linked <= {PACK.version}, (
-        f"{path.name} links releases {sorted(linked - {PACK.version})} while the pack "
-        f"is {PACK.version}. A link to a superseded tag reads as current."
-    )
-    if PACK.version not in linked:
-        assert "not tagged yet" in text or "henüz etiketlenmedi" in text, (
-            f"{path.name} neither links v{PACK.version} nor says it is untagged. A "
-            "version prepared but not cut is a real state and has to be stated."
+    assert PACK.version in text, f"{path.name} does not name current version {PACK.version}"
+    development = "under development" in text or "geliştirme aşamasındadır" in text
+    current_release = f"/releases/tag/v{PACK.version}" in text
+    assert development or current_release
+    linked = re.findall(r"/releases/tag/v(\d+\.\d+\.\d+)", text)
+    assert linked, f"{path.name} no longer links the latest published release"
+    if development:
+        assert PACK.version not in linked, (
+            "an unreleased version must not be presented as published"
         )
+    else:
+        assert PACK.version in linked, "the current release is not the linked published version"
 
 
 @pytest.mark.parametrize("path", [README_EN, README_TR], ids=["en", "tr"])
@@ -484,8 +513,7 @@ def test_each_readme_installs_the_engine_from_where_it_now_lives(path: Path) -> 
         f"{path.name} does not link the published engine"
     )
     assert "git+https://github.com/lokomotifai/mintmark" not in text, (
-        f"{path.name} still installs from git, which was the workaround for not "
-        f"being on an index"
+        f"{path.name} still installs from git, which was the workaround for not being on an index"
     )
 
 
@@ -500,6 +528,7 @@ def test_each_readme_references_only_committed_assets(path: Path) -> None:
 # The health boundary.
 
 CLINICAL_DENIED = ROOT / "lexicons" / "clinical_denied_tr.txt"
+VEHICLE_BRANDS_DENIED = ROOT / "lexicons" / "vehicle_brands_denied_tr.txt"
 
 
 def denied_terms() -> list[str]:
@@ -517,64 +546,140 @@ def test_the_clinical_denied_list_has_real_content() -> None:
         assert category in terms, f"the list omits {category!r}"
 
 
-def test_no_rendered_document_contains_denied_clinical_vocabulary(minted: Path) -> None:
-    """The boundary held in a real mint, not only in the templates.
+def test_no_emitted_value_contains_denied_clinical_vocabulary(
+    minted: Path, evaluation_mint: Path
+) -> None:
+    """The boundary holds across structured, baseline, and evaluation output.
 
-    A template that drifts into clinical detail still renders, still labels, and
-    still passes every other check. This is the control that would notice.
+    A field, lexicon, or template that drifts into clinical detail can still be
+    structurally valid. Scan every emitted string rather than trusting labels or
+    limiting the check to the two baseline document bodies.
     """
     from mintmark.lexicons import parse
 
     denied = parse("\n".join(f"{term}    # denied clinical vocabulary" for term in denied_terms()))
     offenders = []
-    for name in ("claim_note", "call_transcript"):
-        for line in (minted / f"{name}.jsonl").read_text(encoding="utf-8").splitlines():
-            if not line.strip():
+    for output in (minted, evaluation_mint):
+        for path in sorted(output.glob("*.jsonl")):
+            if path.name.endswith(".labels.jsonl"):
                 continue
-            body = json.loads(line)["body"]
-            for hit in denied.scan(body):
-                offenders.append(f"{name}: {hit.entry!r} in a rendered document")
+            for line in path.read_text(encoding="utf-8").splitlines():
+                if not line.strip():
+                    continue
+                record = json.loads(line)
+                for field, value in record.items():
+                    if not isinstance(value, str):
+                        continue
+                    for hit in denied.scan(value):
+                        offenders.append(f"{path.name}:{field}: {hit.entry!r}")
     assert not offenders, "\n".join(offenders[:10])
 
 
-def test_no_template_source_contains_denied_clinical_vocabulary() -> None:
-    """Catch it in the template rather than waiting for a draw to surface it."""
+def test_no_declaration_or_template_branch_contains_denied_clinical_vocabulary() -> None:
+    """Exhaust every bounded grammar branch and all string-emitting declarations."""
+    from mintmark.annotate import Label
+    from mintmark.engine.templates import (
+        Alternation,
+        EntitySlot,
+        FieldSlot,
+        IdentifierSlot,
+        LexiconSlot,
+        Literal,
+        Optional,
+        parse_template,
+    )
+    from mintmark.identifiers import ALL_ENGINES
     from mintmark.lexicons import parse
+    from mintmark.mint import core_descriptors
 
     denied = parse("\n".join(f"{term}    # denied clinical vocabulary" for term in denied_terms()))
-    text = "\n".join(
-        p.read_text(encoding="utf-8") for p in sorted((ROOT / "templates").rglob("*.yaml"))
-    )
-    hits = [hit.entry for hit in denied.scan(text)]
-    assert not hits, f"a template carries denied clinical vocabulary: {hits}"
+
+    def scalar_strings(value: object) -> list[str]:
+        if isinstance(value, str):
+            return [value]
+        if isinstance(value, dict):
+            return [text for nested in value.values() for text in scalar_strings(nested)]
+        if isinstance(value, (list, tuple)):
+            return [text for nested in value for text in scalar_strings(nested)]
+        return []
+
+    def literal_expansions(nodes: tuple[object, ...]) -> tuple[str, ...]:
+        outputs = [""]
+        for node in nodes:
+            if isinstance(node, Literal):
+                variants = (node.text,)
+            elif isinstance(node, (FieldSlot, EntitySlot, IdentifierSlot, LexiconSlot)):
+                variants = (" ",)
+            elif isinstance(node, Alternation):
+                variants = tuple(
+                    text for branch in node.branches for text in literal_expansions(branch)
+                )
+            elif isinstance(node, Optional):
+                variants = ("", *literal_expansions(node.body))
+            else:
+                raise AssertionError(f"unknown template node {node!r}")
+            assert len(outputs) * len(variants) <= 10_000
+            outputs = [prefix + suffix for prefix in outputs for suffix in variants]
+        return tuple(outputs)
+
+    surfaces: list[tuple[str, str]] = [
+        (f"lexicon {name}", value) for name, values in PACK.lexicons.items() for value in values
+    ]
+    surfaces.extend(("core HEALTH descriptor", value) for value in core_descriptors(Label.HEALTH))
+    for record_type in PACK.record_types:
+        for field in record_type.fields:
+            surfaces.extend(
+                (f"field {record_type.type_name}.{field.name}", value)
+                for value in scalar_strings(field.params)
+            )
+    for set_name, entries in PACK.template_sets.items():
+        for entry in entries:
+            nodes = parse_template(
+                entry.text,
+                template_id=entry.id,
+                known_labels=frozenset(label.value for label in ALL_LABELS),
+                known_identifiers=frozenset(ALL_ENGINES),
+                known_lexicons=frozenset(PACK.lexicons),
+            )
+            surfaces.extend(
+                (f"template {set_name}/{entry.id}", text) for text in literal_expansions(nodes)
+            )
+    offenders = [
+        f"{source}: {hit.entry!r}" for source, surface in surfaces for hit in denied.scan(surface)
+    ]
+    assert not offenders, "\n".join(offenders[:10])
 
 
-def test_every_health_span_draws_from_the_core_condition_classes(minted: Path) -> None:
+def test_every_health_span_draws_from_the_core_condition_classes(
+    minted: Path, evaluation_mint: Path
+) -> None:
     """Category granularity is enforced by where the surface comes from."""
     from mintmark.annotate import Label
     from mintmark.mint import core_descriptors
 
     allowed = set(core_descriptors(Label.HEALTH))
-    for sidecar in sorted(minted.glob("*.labels.jsonl")):
-        stem = sidecar.name.removesuffix(".labels.jsonl")
-        bodies = {
-            next(v for k, v in json.loads(line).items() if k.endswith("_id")): json.loads(line)[
-                "body"
-            ]
-            for line in (minted / f"{stem}.jsonl").read_text(encoding="utf-8").splitlines()
-            if line.strip()
-        }
-        for line in sidecar.read_text(encoding="utf-8").splitlines():
-            if not line.strip():
-                continue
-            record = json.loads(line)
-            text = bodies[record["doc_id"]]
-            for span in record["spans"]:
-                if span["label"] == "HEALTH":
-                    surface = text[span["start"] : span["end"]]
-                    assert surface in allowed, (
-                        f"a HEALTH span carries {surface!r}, which is not a curated condition class"
-                    )
+    for output in (minted, evaluation_mint):
+        for sidecar in sorted(output.glob("*.labels.jsonl")):
+            stem = sidecar.name.removesuffix(".labels.jsonl")
+            bodies = {
+                next(v for k, v in json.loads(line).items() if k.endswith("_id")): json.loads(line)[
+                    "body"
+                ]
+                for line in (output / f"{stem}.jsonl").read_text(encoding="utf-8").splitlines()
+                if line.strip()
+            }
+            for line in sidecar.read_text(encoding="utf-8").splitlines():
+                if not line.strip():
+                    continue
+                record = json.loads(line)
+                text = bodies[record["doc_id"]]
+                for span in record["spans"]:
+                    if span["label"] == "HEALTH":
+                        surface = text[span["start"] : span["end"]]
+                        assert surface in allowed, (
+                            f"a HEALTH span carries {surface!r}, which is not a curated "
+                            "condition class"
+                        )
 
 
 def test_the_denied_list_would_catch_a_planted_term() -> None:
@@ -584,6 +689,29 @@ def test_the_denied_list_would_catch_a_planted_term() -> None:
     denied = parse("\n".join(f"{term}    # denied clinical vocabulary" for term in denied_terms()))
     planted = "Sigortalinin dosyasina kemoterapi tedavisi notu islendi."
     assert denied.scan(planted), "the denied list no longer catches an obvious term"
+
+
+def test_vehicle_brand_prohibition_covers_declarations_and_all_outputs(
+    minted: Path, evaluation_mint: Path
+) -> None:
+    """The control covers emitted strings, not merely suspicious field names."""
+    brands = load_denylist(VEHICLE_BRANDS_DENIED)
+    assert len(brands.entries) >= 30
+    assert brands.scan("Arac markasi Toyota olarak kaydedildi.")
+
+    offenders = []
+    for path in (
+        sorted((ROOT / "fields").glob("*.yaml"))
+        + sorted((ROOT / "templates").rglob("*.yaml"))
+        + sorted((ROOT / "lexicons").glob("*.yaml"))
+    ):
+        for hit in brands.scan(path.read_text(encoding="utf-8")):
+            offenders.append(f"{path.relative_to(ROOT)}: {hit.entry!r}")
+    for output in (minted, evaluation_mint):
+        for path in sorted(output.glob("*.jsonl")):
+            for hit in brands.scan(path.read_text(encoding="utf-8")):
+                offenders.append(f"{path.name}: {hit.entry!r}")
+    assert not offenders, "\n".join(offenders[:10])
 
 
 # What a version bump costs.
@@ -612,9 +740,7 @@ def test_the_pack_version_is_part_of_what_seeds_the_streams(tmp_path: Path) -> N
     )
     manifest = rolled_back / "pack.yaml"
     manifest.write_text(
-        manifest.read_text(encoding="utf-8").replace(
-            f"version: {PACK.version}", "version: 9.9.9"
-        ),
+        manifest.read_text(encoding="utf-8").replace(f"version: {PACK.version}", "version: 9.9.9"),
         encoding="utf-8",
     )
 
@@ -624,7 +750,7 @@ def test_the_pack_version_is_part_of_what_seeds_the_streams(tmp_path: Path) -> N
         recipe="portfolio-baseline",
         seed=1,
         out=out,
-        records={"policyholder": 20},
+        records=SAMPLE_COUNTS,
         invocation="pytest",
     )
     changed = (out / "policyholder.jsonl").read_bytes()
@@ -715,8 +841,14 @@ def evaluation_mint(tmp_path_factory: pytest.TempPathFactory) -> Path:
         recipe="pii-eval",
         seed=11,
         out=out,
-        records={"policyholder": 40, "policy": 40, "claim": 20, "payment": 40,
-            "claim_note_eval": 200, "call_transcript_eval": 0},
+        records={
+            "policyholder": 40,
+            "policy": 80,
+            "claim": 80,
+            "payment": 80,
+            "claim_note_eval": 200,
+            "call_transcript_eval": 160,
+        },
         invocation="pytest",
     )
     return out
@@ -727,7 +859,9 @@ def test_the_evaluation_documents_are_not_one_sentence_repeated(evaluation_mint:
     entity at a fixed offset behind a fixed cue word. A gazetteer and six regular
     expressions scored near perfectly on it, which says nothing about production."""
     bodies = {}
-    for line in (evaluation_mint / "claim_note_eval.jsonl").read_text(encoding="utf-8").splitlines():
+    for line in (
+        (evaluation_mint / "claim_note_eval.jsonl").read_text(encoding="utf-8").splitlines()
+    ):
         if line.strip():
             record = json.loads(line)
             key = next(v for k, v in record.items() if k.endswith("_id"))
