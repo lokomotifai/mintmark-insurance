@@ -309,8 +309,7 @@ def test_every_reference_resolves(minted: Path) -> None:
 
 def test_every_parent_respects_declared_relationship_bounds(minted: Path) -> None:
     policyholders = [
-        json.loads(line)
-        for line in (minted / "policyholder.jsonl").read_text().splitlines()
+        json.loads(line) for line in (minted / "policyholder.jsonl").read_text().splitlines()
     ]
     policies = [json.loads(line) for line in (minted / "policy.jsonl").read_text().splitlines()]
     claims = [json.loads(line) for line in (minted / "claim.jsonl").read_text().splitlines()]
@@ -488,10 +487,17 @@ def test_each_readme_names_the_release_state_truthfully(path: Path) -> None:
     """
     text = path.read_text(encoding="utf-8")
     assert PACK.version in text, f"{path.name} does not name current version {PACK.version}"
-    assert "under development" in text or "geliştirme aşamasındadır" in text
+    development = "under development" in text or "geliştirme aşamasındadır" in text
+    current_release = f"/releases/tag/v{PACK.version}" in text
+    assert development or current_release
     linked = re.findall(r"/releases/tag/v(\d+\.\d+\.\d+)", text)
     assert linked, f"{path.name} no longer links the latest published release"
-    assert PACK.version not in linked, "an unreleased version must not be presented as published"
+    if development:
+        assert PACK.version not in linked, (
+            "an unreleased version must not be presented as published"
+        )
+    else:
+        assert PACK.version in linked, "the current release is not the linked published version"
 
 
 @pytest.mark.parametrize("path", [README_EN, README_TR], ids=["en", "tr"])
@@ -507,8 +513,7 @@ def test_each_readme_installs_the_engine_from_where_it_now_lives(path: Path) -> 
         f"{path.name} does not link the published engine"
     )
     assert "git+https://github.com/lokomotifai/mintmark" not in text, (
-        f"{path.name} still installs from git, which was the workaround for not "
-        f"being on an index"
+        f"{path.name} still installs from git, which was the workaround for not being on an index"
     )
 
 
@@ -618,13 +623,9 @@ def test_no_declaration_or_template_branch_contains_denied_clinical_vocabulary()
         return tuple(outputs)
 
     surfaces: list[tuple[str, str]] = [
-        (f"lexicon {name}", value)
-        for name, values in PACK.lexicons.items()
-        for value in values
+        (f"lexicon {name}", value) for name, values in PACK.lexicons.items() for value in values
     ]
-    surfaces.extend(
-        ("core HEALTH descriptor", value) for value in core_descriptors(Label.HEALTH)
-    )
+    surfaces.extend(("core HEALTH descriptor", value) for value in core_descriptors(Label.HEALTH))
     for record_type in PACK.record_types:
         for field in record_type.fields:
             surfaces.extend(
@@ -641,13 +642,10 @@ def test_no_declaration_or_template_branch_contains_denied_clinical_vocabulary()
                 known_lexicons=frozenset(PACK.lexicons),
             )
             surfaces.extend(
-                (f"template {set_name}/{entry.id}", text)
-                for text in literal_expansions(nodes)
+                (f"template {set_name}/{entry.id}", text) for text in literal_expansions(nodes)
             )
     offenders = [
-        f"{source}: {hit.entry!r}"
-        for source, surface in surfaces
-        for hit in denied.scan(surface)
+        f"{source}: {hit.entry!r}" for source, surface in surfaces for hit in denied.scan(surface)
     ]
     assert not offenders, "\n".join(offenders[:10])
 
@@ -702,9 +700,11 @@ def test_vehicle_brand_prohibition_covers_declarations_and_all_outputs(
     assert brands.scan("Arac markasi Toyota olarak kaydedildi.")
 
     offenders = []
-    for path in sorted((ROOT / "fields").glob("*.yaml")) + sorted(
-        (ROOT / "templates").rglob("*.yaml")
-    ) + sorted((ROOT / "lexicons").glob("*.yaml")):
+    for path in (
+        sorted((ROOT / "fields").glob("*.yaml"))
+        + sorted((ROOT / "templates").rglob("*.yaml"))
+        + sorted((ROOT / "lexicons").glob("*.yaml"))
+    ):
         for hit in brands.scan(path.read_text(encoding="utf-8")):
             offenders.append(f"{path.relative_to(ROOT)}: {hit.entry!r}")
     for output in (minted, evaluation_mint):
@@ -740,9 +740,7 @@ def test_the_pack_version_is_part_of_what_seeds_the_streams(tmp_path: Path) -> N
     )
     manifest = rolled_back / "pack.yaml"
     manifest.write_text(
-        manifest.read_text(encoding="utf-8").replace(
-            f"version: {PACK.version}", "version: 9.9.9"
-        ),
+        manifest.read_text(encoding="utf-8").replace(f"version: {PACK.version}", "version: 9.9.9"),
         encoding="utf-8",
     )
 
