@@ -15,12 +15,12 @@
   <a href="https://github.com/lokomotifai/mintmark-insurance/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/lokomotifai/mintmark-insurance/ci.yml?branch=main&amp;style=flat-square&amp;label=CI"></a>
   <img alt="Zero engine code" src="https://img.shields.io/badge/engine%20code-none-3C873A?style=flat-square">
   <img alt="18 of 18 coverage targets met" src="https://img.shields.io/badge/coverage%20targets-18%2F18-3C873A?style=flat-square">
-  <img alt="Release v0.2.0" src="https://img.shields.io/badge/release-v0.2.0-8A6412?style=flat-square">
+  <a href="https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.2.0"><img alt="Release v0.2.0" src="https://img.shields.io/badge/release-v0.2.0-8A6412?style=flat-square"></a>
   <a href="LICENSE"><img alt="Apache-2.0 license" src="https://img.shields.io/badge/license-Apache--2.0-3B3F46?style=flat-square"></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/lokomotifai/mintmark"><img alt="Requires the Mintmark core" src="https://img.shields.io/badge/core-%3E%3D0.1%2C%3C0.2-17191F?style=flat-square"></a>
+  <a href="https://github.com/lokomotifai/mintmark"><img alt="Requires the Mintmark core" src="https://img.shields.io/badge/core-%3E%3D0.3%2C%3C0.4-17191F?style=flat-square"></a>
   <img alt="Six record types" src="https://img.shields.io/badge/record%20types-6-17191F?style=flat-square">
   <img alt="Seven insurance branches" src="https://img.shields.io/badge/branches-7-17191F?style=flat-square">
   <img alt="26 fictional insurer names" src="https://img.shields.io/badge/fictional%20insurers-26-D11F26?style=flat-square">
@@ -50,18 +50,17 @@ mixes financial, behavioral, and health-adjacent personal data. None of it can
 move into a test environment without KVKK exposure. This pack declares that data,
 and the engine mints it: deterministic, span-labeled, and sealed by a manifest.
 
-**Version 0.2.0, prepared and not tagged yet. Its reference datasets are minted
-from these declarations and attached to
-v0.2.0 when the tag
-is cut, each carrying its own manifest and checksums.** What is true today: `packcheck` passes against
-the pinned core, the test suite passes, and the evaluation recipe meets every one
-of its eighteen coverage targets.
+**Release 0.2.0. Its reference datasets are attached to
+[v0.2.0](https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.2.0),
+each carrying its own manifest and checksums.** `packcheck` passes against the
+pinned core, the test suite passes, and the evaluation recipe meets every one of
+its eighteen coverage targets.
 
 > [!IMPORTANT]
 > **What this pack is not.** It is not anonymization of your policy data; it
 > ingests none. It is not a compliance guarantee and not a legal safe harbor. It
 > is **not clinical data and not a substitute for it**: the health branch stays at
-> category granularity by design. The anomaly recipe is detector-side test data
+> category granularity by design. The anomaly labels are detector-side test data
 > and this repository documents no evasion guidance. Generated phone numbers can
 > coincide with assigned ones, because the Turkish numbering plan reserves no
 > fictional range. This data is for testing systems. It is never for contacting
@@ -255,14 +254,15 @@ All of it runs offline against the vendored core wheel.
 
 ## Project status
 
-Version 0.2.0 is under development. The latest published reference datasets remain attached to
-[v0.1.2](https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.1.2). This version moves emitted bytes for a fixed seed,
+Version 0.2.0 is released. Its reference datasets are attached to
+[v0.2.0](https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.2.0).
+This version moves emitted bytes for a fixed seed,
 which this project family calls a major version event: the core began honouring
 template weights, and both the core and this pack widened the surface vocabularies
 a document draws from. The reference datasets attached to v0.1.2 stay valid and
 stay reproducible, with the core and pack versions their own manifests record. New
-ones are minted from these declarations at the seeds in
-[docs/reference-datasets.json](docs/reference-datasets.json) when the tag is cut.
+The v0.2.0 datasets were minted from these declarations at the seeds in
+[docs/reference-datasets.json](docs/reference-datasets.json).
 The engine is on PyPI as [`mintmark`](https://pypi.org/project/mintmark/). The
 weekly pin check rebuilds the vendored wheel from its immutable audited source
 revision and requires an exact byte match.
@@ -283,7 +283,6 @@ right to the Mintmark name or logo; see [TRADEMARKS.md](TRADEMARKS.md).
 Reference datasets are licensed **CC BY 4.0**: use them for anything, including
 commercially, and credit the source. Every dataset carries its own credit line in
 `MINTMARK.json` and `mintmark verify` prints it, so nothing has to be assembled by
-hand. See [LICENSE-DATASETS.md](LICENSE-DATASETS.md). Pending legal confirmation;
-nothing here states it as settled.
+hand. See [LICENSE-DATASETS.md](LICENSE-DATASETS.md).
 
 <p align="center"><sub>Part of the Mintmark family: <a href="https://github.com/lokomotifai/mintmark">the engine</a> · <a href="https://github.com/lokomotifai/mintmark-banking">banking</a> · <a href="https://github.com/lokomotifai/mintmark-hr">human resources</a></sub></p>
