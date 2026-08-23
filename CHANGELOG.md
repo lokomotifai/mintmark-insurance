@@ -113,6 +113,10 @@ manifests record.
   workflow checks out the audited core commit, rebuilds it with the locked
   backend, and requires byte-for-byte equality with the repository-local wheel.
 
+- **The vehicle-brand prohibition now follows values.** A Unicode-aware denied
+  list is checked across string-emitting declarations and both baseline and
+  evaluation output, instead of relying only on a blacklist of field names.
+
 ## 0.1.2 - 2026-08-22
 
 ### Added

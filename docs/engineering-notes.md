@@ -38,7 +38,10 @@ corrupt every evaluation this pack's dataset is used for. Two tests hold it: one
 on the field declaration, one on the minted sidecars.
 
 **No vehicle make or model field exists.** The brand prohibition covers vehicle
-brands. A test asserts no field is named for one.
+brands. A dedicated Unicode-aware denylist is scanned across field, template,
+and lexicon declarations and across baseline and evaluation output; a separate
+shape assertion still prevents a make/model field from being introduced under
+the obvious names.
 
 If a later taxonomy version adds a plate label, this pack takes it in a major
 bump, because it changes the label set of every dataset minted afterwards.

@@ -523,6 +523,7 @@ def test_each_readme_references_only_committed_assets(path: Path) -> None:
 # The health boundary.
 
 CLINICAL_DENIED = ROOT / "lexicons" / "clinical_denied_tr.txt"
+VEHICLE_BRANDS_DENIED = ROOT / "lexicons" / "vehicle_brands_denied_tr.txt"
 
 
 def denied_terms() -> list[str]:
@@ -690,6 +691,27 @@ def test_the_denied_list_would_catch_a_planted_term() -> None:
     denied = parse("\n".join(f"{term}    # denied clinical vocabulary" for term in denied_terms()))
     planted = "Sigortalinin dosyasina kemoterapi tedavisi notu islendi."
     assert denied.scan(planted), "the denied list no longer catches an obvious term"
+
+
+def test_vehicle_brand_prohibition_covers_declarations_and_all_outputs(
+    minted: Path, evaluation_mint: Path
+) -> None:
+    """The control covers emitted strings, not merely suspicious field names."""
+    brands = load_denylist(VEHICLE_BRANDS_DENIED)
+    assert len(brands.entries) >= 30
+    assert brands.scan("Arac markasi Toyota olarak kaydedildi.")
+
+    offenders = []
+    for path in sorted((ROOT / "fields").glob("*.yaml")) + sorted(
+        (ROOT / "templates").rglob("*.yaml")
+    ) + sorted((ROOT / "lexicons").glob("*.yaml")):
+        for hit in brands.scan(path.read_text(encoding="utf-8")):
+            offenders.append(f"{path.relative_to(ROOT)}: {hit.entry!r}")
+    for output in (minted, evaluation_mint):
+        for path in sorted(output.glob("*.jsonl")):
+            for hit in brands.scan(path.read_text(encoding="utf-8")):
+                offenders.append(f"{path.name}: {hit.entry!r}")
+    assert not offenders, "\n".join(offenders[:10])
 
 
 # What a version bump costs.

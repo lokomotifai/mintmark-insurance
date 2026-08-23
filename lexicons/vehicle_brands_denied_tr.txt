@@ -1,0 +1,35 @@
+# Vehicle makes forbidden by the pack contract. Matching uses Mintmark's
+# Unicode-aware denylist fold. Keep multi-word marks intact and avoid generic
+# dictionary words that would create unrelated PERSON or ORG collisions.
+Audi    # vehicle make
+BMW    # vehicle make
+Citroen    # vehicle make
+Cupra    # vehicle make
+Dacia    # vehicle make
+Ferrari    # vehicle make
+Honda    # vehicle make
+Hyundai    # vehicle make
+Isuzu    # vehicle make
+Jeep    # vehicle make
+Kia    # vehicle make
+Lamborghini    # vehicle make
+Land Rover    # vehicle make
+Lexus    # vehicle make
+Maserati    # vehicle make
+Mazda    # vehicle make
+Mercedes Benz    # vehicle make
+Mini Cooper    # vehicle make
+Mitsubishi    # vehicle make
+Nissan    # vehicle make
+Opel    # vehicle make
+Peugeot    # vehicle make
+Porsche    # vehicle make
+Renault    # vehicle make
+Seat    # vehicle make
+Skoda    # vehicle make
+Subaru    # vehicle make
+Suzuki    # vehicle make
+Tesla    # vehicle make
+Toyota    # vehicle make
+Volkswagen    # vehicle make
+Volvo    # vehicle make
