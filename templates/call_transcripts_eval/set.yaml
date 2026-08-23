@@ -1,97 +1,75 @@
 entries:
 - id: eval_health_religion
   weight: '1'
-  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.|Telefon gorusmesi notu.|Musteri hizmetleri kaydi.)
-    (Arayan|Ihbari yapan|Gorusulen kisi) {entity:PERSON}, (kimlik|TC kimlik numarasi) {id:TCKN}[?0.7:,
-    (dogum tarihi|dogum) {entity:DOB}]. (Bildirilen olay|Gorusme konusu) {lex:perils_tr}.
-    [?0.6:(Adres|Olay yeri) {entity:ADDRESS} olarak alindi. ][?0.75:(Geri donus numarasi|Telefon)
-    {id:PHONE}[?0.6:, (eposta|e-posta) {id:EMAIL}]. ][?0.8:(Odeme|Tazminat) icin {id:IBAN} hesabi
-    bildirildi. ][?0.4:(Kart|Kayitli kart) {id:PAN} sorgulandi. ][?0.7:(Police sahibi kurum|Acente|Karsi
-    taraf) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}]. ][?special:
-    (Gorusmede|Arayan tarafindan) {entity:HEALTH} beyan edildi.][?special: (Ayrica|Kayda)
-    {entity:RELIGION} notu eklendi.] (Cagri kapatildi.|Kayit tamamlandi.|Dosyaya yonlendirildi.|Gorusme
-    sonlandirildi.)'
+  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.)
+    Arayan {entity:PERSON}, kimlik {id:TCKN}[?0.7:,
+    dogum tarihi {entity:DOB}]. Bildirilen olay {lex:perils_tr}.
+    [?0.6:Adres {entity:ADDRESS} olarak alindi. ][?0.75:Geri donus numarasi {id:PHONE}, eposta {id:EMAIL}. ][?0.8:Odeme icin {id:IBAN} hesabi
+    bildirildi. ][?0.4:Kart {id:PAN} sorgulandi. ][?0.7:Acente {entity:ORG}, vergi numarasi {id:VKN}. ][?special:
+    Gorusmede {entity:HEALTH} beyan edildi.][?special: Ayrica
+    {entity:RELIGION} notu eklendi.] (Cagri kapatildi.|Kayit tamamlandi.)'
 - id: eval_union_ethnicity
   weight: '1'
-  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.|Telefon gorusmesi notu.|Musteri hizmetleri kaydi.)
-    (Arayan|Ihbari yapan|Gorusulen kisi) {entity:PERSON}, (kimlik|TC kimlik numarasi) {id:TCKN}[?0.7:,
-    (dogum tarihi|dogum) {entity:DOB}]. (Bildirilen olay|Gorusme konusu) {lex:perils_tr}.
-    [?0.6:(Adres|Olay yeri) {entity:ADDRESS} olarak alindi. ][?0.75:(Geri donus numarasi|Telefon)
-    {id:PHONE}[?0.6:, (eposta|e-posta) {id:EMAIL}]. ][?0.8:(Odeme|Tazminat) icin {id:IBAN} hesabi
-    bildirildi. ][?0.4:(Kart|Kayitli kart) {id:PAN} sorgulandi. ][?0.7:(Police sahibi kurum|Acente|Karsi
-    taraf) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}]. ][?special:
-    (Gorusmede|Arayan tarafindan) {entity:UNION} beyan edildi.][?special: (Ayrica|Kayda)
-    {entity:ETHNICITY} notu eklendi.] (Cagri kapatildi.|Kayit tamamlandi.|Dosyaya yonlendirildi.|Gorusme
-    sonlandirildi.)'
+  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.)
+    Arayan {entity:PERSON}, kimlik {id:TCKN}[?0.7:,
+    dogum tarihi {entity:DOB}]. Bildirilen olay {lex:perils_tr}.
+    [?0.6:Adres {entity:ADDRESS} olarak alindi. ][?0.75:Geri donus numarasi {id:PHONE}, eposta {id:EMAIL}. ][?0.8:Odeme icin {id:IBAN} hesabi
+    bildirildi. ][?0.4:Kart {id:PAN} sorgulandi. ][?0.7:Acente {entity:ORG}, vergi numarasi {id:VKN}. ][?special:
+    Gorusmede {entity:UNION} beyan edildi.][?special: Ayrica
+    {entity:ETHNICITY} notu eklendi.] (Cagri kapatildi.|Kayit tamamlandi.)'
 - id: eval_political_criminal
   weight: '1'
-  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.|Telefon gorusmesi notu.|Musteri hizmetleri kaydi.)
-    (Arayan|Ihbari yapan|Gorusulen kisi) {entity:PERSON}, (kimlik|TC kimlik numarasi) {id:TCKN}[?0.7:,
-    (dogum tarihi|dogum) {entity:DOB}]. (Bildirilen olay|Gorusme konusu) {lex:perils_tr}.
-    [?0.6:(Adres|Olay yeri) {entity:ADDRESS} olarak alindi. ][?0.75:(Geri donus numarasi|Telefon)
-    {id:PHONE}[?0.6:, (eposta|e-posta) {id:EMAIL}]. ][?0.8:(Odeme|Tazminat) icin {id:IBAN} hesabi
-    bildirildi. ][?0.4:(Kart|Kayitli kart) {id:PAN} sorgulandi. ][?0.7:(Police sahibi kurum|Acente|Karsi
-    taraf) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}]. ][?special:
-    (Gorusmede|Arayan tarafindan) {entity:POLITICAL} beyan edildi.][?special: (Ayrica|Kayda)
-    {entity:CRIMINAL} notu eklendi.] (Cagri kapatildi.|Kayit tamamlandi.|Dosyaya yonlendirildi.|Gorusme
-    sonlandirildi.)'
+  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.)
+    Arayan {entity:PERSON}, kimlik {id:TCKN}[?0.7:,
+    dogum tarihi {entity:DOB}]. Bildirilen olay {lex:perils_tr}.
+    [?0.6:Adres {entity:ADDRESS} olarak alindi. ][?0.75:Geri donus numarasi {id:PHONE}, eposta {id:EMAIL}. ][?0.8:Odeme icin {id:IBAN} hesabi
+    bildirildi. ][?0.4:Kart {id:PAN} sorgulandi. ][?0.7:Acente {entity:ORG}, vergi numarasi {id:VKN}. ][?special:
+    Gorusmede {entity:POLITICAL} beyan edildi.][?special: Ayrica
+    {entity:CRIMINAL} notu eklendi.] (Cagri kapatildi.|Kayit tamamlandi.)'
 - id: eval_religion_biometric_ref
   weight: '1'
-  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.|Telefon gorusmesi notu.|Musteri hizmetleri kaydi.)
-    (Arayan|Ihbari yapan|Gorusulen kisi) {entity:PERSON}, (kimlik|TC kimlik numarasi) {id:TCKN}[?0.7:,
-    (dogum tarihi|dogum) {entity:DOB}]. (Bildirilen olay|Gorusme konusu) {lex:perils_tr}.
-    [?0.6:(Adres|Olay yeri) {entity:ADDRESS} olarak alindi. ][?0.75:(Geri donus numarasi|Telefon)
-    {id:PHONE}[?0.6:, (eposta|e-posta) {id:EMAIL}]. ][?0.8:(Odeme|Tazminat) icin {id:IBAN} hesabi
-    bildirildi. ][?0.4:(Kart|Kayitli kart) {id:PAN} sorgulandi. ][?0.7:(Police sahibi kurum|Acente|Karsi
-    taraf) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}]. ][?special:
-    (Gorusmede|Arayan tarafindan) {entity:RELIGION} beyan edildi.][?special: (Ayrica|Kayda)
+  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.)
+    Arayan {entity:PERSON}, kimlik {id:TCKN}[?0.7:,
+    dogum tarihi {entity:DOB}]. Bildirilen olay {lex:perils_tr}.
+    [?0.6:Adres {entity:ADDRESS} olarak alindi. ][?0.75:Geri donus numarasi {id:PHONE}, eposta {id:EMAIL}. ][?0.8:Odeme icin {id:IBAN} hesabi
+    bildirildi. ][?0.4:Kart {id:PAN} sorgulandi. ][?0.7:Acente {entity:ORG}, vergi numarasi {id:VKN}. ][?special:
+    Gorusmede {entity:RELIGION} beyan edildi.][?special: Ayrica
     {entity:BIOMETRIC_REF} notu eklendi.] (Cagri kapatildi.|Kayit tamamlandi.|Dosyaya
     yonlendirildi.|Gorusme sonlandirildi.)'
 - id: eval_ethnicity_sexual_life
   weight: '1'
-  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.|Telefon gorusmesi notu.|Musteri hizmetleri kaydi.)
-    (Arayan|Ihbari yapan|Gorusulen kisi) {entity:PERSON}, (kimlik|TC kimlik numarasi) {id:TCKN}[?0.7:,
-    (dogum tarihi|dogum) {entity:DOB}]. (Bildirilen olay|Gorusme konusu) {lex:perils_tr}.
-    [?0.6:(Adres|Olay yeri) {entity:ADDRESS} olarak alindi. ][?0.75:(Geri donus numarasi|Telefon)
-    {id:PHONE}[?0.6:, (eposta|e-posta) {id:EMAIL}]. ][?0.8:(Odeme|Tazminat) icin {id:IBAN} hesabi
-    bildirildi. ][?0.4:(Kart|Kayitli kart) {id:PAN} sorgulandi. ][?0.7:(Police sahibi kurum|Acente|Karsi
-    taraf) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}]. ][?special:
-    (Gorusmede|Arayan tarafindan) {entity:ETHNICITY} beyan edildi.][?special: (Ayrica|Kayda)
+  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.)
+    Arayan {entity:PERSON}, kimlik {id:TCKN}[?0.7:,
+    dogum tarihi {entity:DOB}]. Bildirilen olay {lex:perils_tr}.
+    [?0.6:Adres {entity:ADDRESS} olarak alindi. ][?0.75:Geri donus numarasi {id:PHONE}, eposta {id:EMAIL}. ][?0.8:Odeme icin {id:IBAN} hesabi
+    bildirildi. ][?0.4:Kart {id:PAN} sorgulandi. ][?0.7:Acente {entity:ORG}, vergi numarasi {id:VKN}. ][?special:
+    Gorusmede {entity:ETHNICITY} beyan edildi.][?special: Ayrica
     {entity:SEXUAL_LIFE} notu eklendi.] (Cagri kapatildi.|Kayit tamamlandi.|Dosyaya
     yonlendirildi.|Gorusme sonlandirildi.)'
 - id: eval_criminal_health
   weight: '1'
-  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.|Telefon gorusmesi notu.|Musteri hizmetleri kaydi.)
-    (Arayan|Ihbari yapan|Gorusulen kisi) {entity:PERSON}, (kimlik|TC kimlik numarasi) {id:TCKN}[?0.7:,
-    (dogum tarihi|dogum) {entity:DOB}]. (Bildirilen olay|Gorusme konusu) {lex:perils_tr}.
-    [?0.6:(Adres|Olay yeri) {entity:ADDRESS} olarak alindi. ][?0.75:(Geri donus numarasi|Telefon)
-    {id:PHONE}[?0.6:, (eposta|e-posta) {id:EMAIL}]. ][?0.8:(Odeme|Tazminat) icin {id:IBAN} hesabi
-    bildirildi. ][?0.4:(Kart|Kayitli kart) {id:PAN} sorgulandi. ][?0.7:(Police sahibi kurum|Acente|Karsi
-    taraf) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}]. ][?special:
-    (Gorusmede|Arayan tarafindan) {entity:CRIMINAL} beyan edildi.][?special: (Ayrica|Kayda)
-    {entity:HEALTH} notu eklendi.] (Cagri kapatildi.|Kayit tamamlandi.|Dosyaya yonlendirildi.|Gorusme
-    sonlandirildi.)'
+  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.)
+    Arayan {entity:PERSON}, kimlik {id:TCKN}[?0.7:,
+    dogum tarihi {entity:DOB}]. Bildirilen olay {lex:perils_tr}.
+    [?0.6:Adres {entity:ADDRESS} olarak alindi. ][?0.75:Geri donus numarasi {id:PHONE}, eposta {id:EMAIL}. ][?0.8:Odeme icin {id:IBAN} hesabi
+    bildirildi. ][?0.4:Kart {id:PAN} sorgulandi. ][?0.7:Acente {entity:ORG}, vergi numarasi {id:VKN}. ][?special:
+    Gorusmede {entity:CRIMINAL} beyan edildi.][?special: Ayrica
+    {entity:HEALTH} notu eklendi.] (Cagri kapatildi.|Kayit tamamlandi.)'
 - id: eval_biometric_ref_union
   weight: '1'
-  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.|Telefon gorusmesi notu.|Musteri hizmetleri kaydi.)
-    (Arayan|Ihbari yapan|Gorusulen kisi) {entity:PERSON}, (kimlik|TC kimlik numarasi) {id:TCKN}[?0.7:,
-    (dogum tarihi|dogum) {entity:DOB}]. (Bildirilen olay|Gorusme konusu) {lex:perils_tr}.
-    [?0.6:(Adres|Olay yeri) {entity:ADDRESS} olarak alindi. ][?0.75:(Geri donus numarasi|Telefon)
-    {id:PHONE}[?0.6:, (eposta|e-posta) {id:EMAIL}]. ][?0.8:(Odeme|Tazminat) icin {id:IBAN} hesabi
-    bildirildi. ][?0.4:(Kart|Kayitli kart) {id:PAN} sorgulandi. ][?0.7:(Police sahibi kurum|Acente|Karsi
-    taraf) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}]. ][?special:
-    (Gorusmede|Arayan tarafindan) {entity:BIOMETRIC_REF} beyan edildi.][?special: (Ayrica|Kayda)
-    {entity:UNION} notu eklendi.] (Cagri kapatildi.|Kayit tamamlandi.|Dosyaya yonlendirildi.|Gorusme
-    sonlandirildi.)'
+  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.)
+    Arayan {entity:PERSON}, kimlik {id:TCKN}[?0.7:,
+    dogum tarihi {entity:DOB}]. Bildirilen olay {lex:perils_tr}.
+    [?0.6:Adres {entity:ADDRESS} olarak alindi. ][?0.75:Geri donus numarasi {id:PHONE}, eposta {id:EMAIL}. ][?0.8:Odeme icin {id:IBAN} hesabi
+    bildirildi. ][?0.4:Kart {id:PAN} sorgulandi. ][?0.7:Acente {entity:ORG}, vergi numarasi {id:VKN}. ][?special:
+    Gorusmede {entity:BIOMETRIC_REF} beyan edildi.][?special: Ayrica
+    {entity:UNION} notu eklendi.] (Cagri kapatildi.|Kayit tamamlandi.)'
 - id: eval_sexual_life_political
   weight: '1'
-  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.|Telefon gorusmesi notu.|Musteri hizmetleri kaydi.)
-    (Arayan|Ihbari yapan|Gorusulen kisi) {entity:PERSON}, (kimlik|TC kimlik numarasi) {id:TCKN}[?0.7:,
-    (dogum tarihi|dogum) {entity:DOB}]. (Bildirilen olay|Gorusme konusu) {lex:perils_tr}.
-    [?0.6:(Adres|Olay yeri) {entity:ADDRESS} olarak alindi. ][?0.75:(Geri donus numarasi|Telefon)
-    {id:PHONE}[?0.6:, (eposta|e-posta) {id:EMAIL}]. ][?0.8:(Odeme|Tazminat) icin {id:IBAN} hesabi
-    bildirildi. ][?0.4:(Kart|Kayitli kart) {id:PAN} sorgulandi. ][?0.7:(Police sahibi kurum|Acente|Karsi
-    taraf) {entity:ORG}[?0.6:, (vergi numarasi|vergi kimlik numarasi) {id:VKN}]. ][?special:
-    (Gorusmede|Arayan tarafindan) {entity:SEXUAL_LIFE} beyan edildi.][?special: (Ayrica|Kayda)
-    {entity:POLITICAL} notu eklendi.] (Cagri kapatildi.|Kayit tamamlandi.|Dosyaya yonlendirildi.|Gorusme
-    sonlandirildi.)'
+  text: '(Cagri kaydi ozeti.|Ihbar hatti dokumu.)
+    Arayan {entity:PERSON}, kimlik {id:TCKN}[?0.7:,
+    dogum tarihi {entity:DOB}]. Bildirilen olay {lex:perils_tr}.
+    [?0.6:Adres {entity:ADDRESS} olarak alindi. ][?0.75:Geri donus numarasi {id:PHONE}, eposta {id:EMAIL}. ][?0.8:Odeme icin {id:IBAN} hesabi
+    bildirildi. ][?0.4:Kart {id:PAN} sorgulandi. ][?0.7:Acente {entity:ORG}, vergi numarasi {id:VKN}. ][?special:
+    Gorusmede {entity:SEXUAL_LIFE} beyan edildi.][?special: Ayrica
+    {entity:POLITICAL} notu eklendi.] (Cagri kapatildi.|Kayit tamamlandi.)'

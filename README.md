@@ -255,16 +255,17 @@ All of it runs offline against the vendored core wheel.
 
 ## Project status
 
-Version 0.2.0, not tagged yet. This version moves emitted bytes for a fixed seed,
+Version 0.2.0 is under development. The latest published reference datasets remain attached to
+[v0.1.2](https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.1.2). This version moves emitted bytes for a fixed seed,
 which this project family calls a major version event: the core began honouring
 template weights, and both the core and this pack widened the surface vocabularies
 a document draws from. The reference datasets attached to v0.1.2 stay valid and
 stay reproducible, with the core and pack versions their own manifests record. New
 ones are minted from these declarations at the seeds in
 [docs/reference-datasets.json](docs/reference-datasets.json) when the tag is cut.
-The engine is on PyPI as [`mintmark`](https://pypi.org/project/mintmark/), and the
-weekly pin check stays red until 0.2.0 is published there, which is accurate: a
-vendored core nobody else can fetch is a core nobody else can check.
+The engine is on PyPI as [`mintmark`](https://pypi.org/project/mintmark/). The
+weekly pin check rebuilds the vendored wheel from its immutable audited source
+revision and requires an exact byte match.
 
 ## Community contract
 

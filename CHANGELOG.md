@@ -33,7 +33,7 @@ manifests record.
   the effective policy came from the command line, gated only by
   `allowed_identifier_policies` here, which listed `validator`. So a recipe pinned
   to `safe` minted checksum-valid identifiers whenever a caller passed the flag.
-  The allowlist is now `[safe]`, and core 0.2.0 treats a recipe pin as binding.
+  The allowlist is now `[safe]`, and core 0.3.0 treats a recipe pin as binding.
   This matters most for TCKN and VKN: an IBAN from this family carries a bank code
   no institution holds and a PAN begins with a major industry identifier no card
   network uses, but a national identity number has no unassignable range, so a
@@ -61,7 +61,7 @@ manifests record.
   byte this pack emitted, because a pack lexicon is only reachable through a field
   generator and nothing named them. They are wired now, through the new
   `entity_lexicons` map in `pack.yaml` and the new `{lex:...}` template slot, and
-  core 0.2.0 refuses to load a pack that ships an unreachable one.
+  core 0.3.0 refuses to load a pack that ships an unreachable one.
 
 - **The private-corpus canary failed every external pull request.** GitHub does
   not give repository secrets to a workflow triggered from a fork, so the required
@@ -79,11 +79,13 @@ manifests record.
 
 ### Changed
 
-- **The core moves from 0.1.3 to 0.2.0**, which honours template weights, lets a
+- **The core moves from 0.1.3 to 0.3.0**, which honours template weights, lets a
   pack contribute entity surfaces, composes person names from the core name pools
   rather than listing twelve, widens the special-category surface lists, always
   runs the checksum sweep in `verify`, and fails verification on a coverage target
-  the mint did not meet. `requires_core` follows to `>=0.2,<0.3`.
+  the mint did not meet, applies bounded streaming verification, canonicalizes
+  denylist comparisons, and rejects infeasible relationship cardinalities.
+  `requires_core` follows to `>=0.3,<0.4`.
 
 - **The README states what a document does not tell you about its record.** An
   identifier in a document body is a fresh draw, so a document linked to a record
@@ -100,7 +102,16 @@ manifests record.
   limitation stay on the baseline recipe, where they always were.
 
 - **`doc_mix` from every recipe.** It restated what the record counts already fix,
-  and core 0.2.0 no longer defines it.
+  and core 0.3.0 no longer defines it.
+
+- **Private-corpus scanning now fails closed.** Ordinary files and archive
+  members are streamed under per-file, aggregate-size, member-count, and nesting
+  limits. Standalone gzip and nested archives are inspected, links and unreadable
+  inputs are rejected, and regression tests cover the boundary conditions.
+
+- **The vendored wheel is bound to immutable source.** The separated network
+  workflow checks out the audited core commit, rebuilds it with the locked
+  backend, and requires byte-for-byte equality with the repository-local wheel.
 
 ## 0.1.2 - 2026-08-22
 

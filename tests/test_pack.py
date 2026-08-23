@@ -10,8 +10,8 @@ from __future__ import annotations
 import json
 import re
 import subprocess
-import tempfile
 import sys
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -73,11 +73,11 @@ def test_the_pack_name_matches_the_repository() -> None:
 
 def test_the_core_pin_has_a_closed_upper_bound() -> None:
     """An open pin lets a future core change what a published manifest reproduces."""
-    assert PACK.requires_core.text == ">=0.2,<0.3"
-    assert PACK.requires_core.contains("0.2.0")
-    assert not PACK.requires_core.contains("0.3.0")
-    assert not PACK.requires_core.contains("0.1.3"), (
-        "0.1.x moved emitted bytes relative to 0.2.0; a pin that spans both is not a pin"
+    assert PACK.requires_core.text == ">=0.3,<0.4"
+    assert PACK.requires_core.contains("0.3.0")
+    assert not PACK.requires_core.contains("0.4.0")
+    assert not PACK.requires_core.contains("0.2.0"), (
+        "0.2.x lacks the complete audited safety contract required by this pack"
     )
 
 
@@ -307,6 +307,34 @@ def test_every_reference_resolves(minted: Path) -> None:
             assert json.loads(line)["policy_id"] in policies
 
 
+def test_every_parent_respects_declared_relationship_bounds(minted: Path) -> None:
+    policyholders = [
+        json.loads(line)
+        for line in (minted / "policyholder.jsonl").read_text().splitlines()
+    ]
+    policies = [json.loads(line) for line in (minted / "policy.jsonl").read_text().splitlines()]
+    claims = [json.loads(line) for line in (minted / "claim.jsonl").read_text().splitlines()]
+    payments = [json.loads(line) for line in (minted / "payment.jsonl").read_text().splitlines()]
+
+    policies_per_holder = {
+        holder["policyholder_id"]: sum(
+            row["policyholder_id"] == holder["policyholder_id"] for row in policies
+        )
+        for holder in policyholders
+    }
+    claims_per_policy = {
+        policy["policy_id"]: sum(row["policy_id"] == policy["policy_id"] for row in claims)
+        for policy in policies
+    }
+    payments_per_policy = {
+        policy["policy_id"]: sum(row["policy_id"] == policy["policy_id"] for row in payments)
+        for policy in policies
+    }
+    assert all(1 <= count <= 4 for count in policies_per_holder.values())
+    assert all(0 <= count <= 2 for count in claims_per_policy.values())
+    assert all(1 <= count <= 12 for count in payments_per_policy.values())
+
+
 def test_pans_are_emitted_masked(minted: Path) -> None:
     for line in (minted / "payment.jsonl").read_text(encoding="utf-8").splitlines():
         value = json.loads(line)["pan_masked"]
@@ -321,10 +349,10 @@ def test_the_anomaly_flag_never_disagrees_with_the_kind(tmp_path: Path) -> None:
         seed=1,
         out=out,
         records={
-            "policyholder": 60,
-            "policy": 400,
+            "policyholder": 200,
+            "policy": 750,
             "claim": 1500,
-            "payment": 300,
+            "payment": 750,
             "claim_note": 10,
             "call_transcript": 10,
         },
@@ -459,16 +487,11 @@ def test_each_readme_names_the_release_state_truthfully(path: Path) -> None:
     real state too, and the README may hold it by saying so.
     """
     text = path.read_text(encoding="utf-8")
-    linked = set(re.findall(r"/releases/tag/v(\d+\.\d+\.\d+)", text))
-    assert linked <= {PACK.version}, (
-        f"{path.name} links releases {sorted(linked - {PACK.version})} while the pack "
-        f"is {PACK.version}. A link to a superseded tag reads as current."
-    )
-    if PACK.version not in linked:
-        assert "not tagged yet" in text or "henüz etiketlenmedi" in text, (
-            f"{path.name} neither links v{PACK.version} nor says it is untagged. A "
-            "version prepared but not cut is a real state and has to be stated."
-        )
+    assert PACK.version in text, f"{path.name} does not name current version {PACK.version}"
+    assert "under development" in text or "geliştirme aşamasındadır" in text
+    linked = re.findall(r"/releases/tag/v(\d+\.\d+\.\d+)", text)
+    assert linked, f"{path.name} no longer links the latest published release"
+    assert PACK.version not in linked, "an unreleased version must not be presented as published"
 
 
 @pytest.mark.parametrize("path", [README_EN, README_TR], ids=["en", "tr"])
@@ -624,7 +647,7 @@ def test_the_pack_version_is_part_of_what_seeds_the_streams(tmp_path: Path) -> N
         recipe="portfolio-baseline",
         seed=1,
         out=out,
-        records={"policyholder": 20},
+        records=SAMPLE_COUNTS,
         invocation="pytest",
     )
     changed = (out / "policyholder.jsonl").read_bytes()
@@ -715,8 +738,14 @@ def evaluation_mint(tmp_path_factory: pytest.TempPathFactory) -> Path:
         recipe="pii-eval",
         seed=11,
         out=out,
-        records={"policyholder": 40, "policy": 40, "claim": 20, "payment": 40,
-            "claim_note_eval": 200, "call_transcript_eval": 0},
+        records={
+            "policyholder": 40,
+            "policy": 80,
+            "claim": 80,
+            "payment": 80,
+            "claim_note_eval": 200,
+            "call_transcript_eval": 0,
+        },
         invocation="pytest",
     )
     return out
@@ -727,7 +756,9 @@ def test_the_evaluation_documents_are_not_one_sentence_repeated(evaluation_mint:
     entity at a fixed offset behind a fixed cue word. A gazetteer and six regular
     expressions scored near perfectly on it, which says nothing about production."""
     bodies = {}
-    for line in (evaluation_mint / "claim_note_eval.jsonl").read_text(encoding="utf-8").splitlines():
+    for line in (
+        (evaluation_mint / "claim_note_eval.jsonl").read_text(encoding="utf-8").splitlines()
+    ):
         if line.strip():
             record = json.loads(line)
             key = next(v for k, v in record.items() if k.endswith("_id"))

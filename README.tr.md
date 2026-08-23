@@ -249,7 +249,9 @@ Hepsi vendor'lanmış çekirdek wheel'ine karşı çevrimdışı çalışır.
 
 ## Proje durumu
 
-Sürüm 0.2.0, henüz etiketlenmedi. Bu sürüm sabit bir tohum için üretilen baytları
+Sürüm 0.2.0 geliştirme aşamasındadır. En son yayımlanan referans veri kümeleri
+[v0.1.2](https://github.com/lokomotifai/mintmark-insurance/releases/tag/v0.1.2)
+sürümünde kalır. Bu sürüm sabit bir tohum için üretilen baytları
 oynatıyor; bu depo ailesi buna ana sürüm olayı diyor: çekirdek şablon ağırlıklarını
 uygulamaya başladı ve hem çekirdek hem bu paket, bir belgenin çektiği yüzey
 dağarcığını genişletti. v0.1.2 sürümüne ekli referans veri kümeleri geçerli kalır
@@ -257,9 +259,8 @@ ve kendi manifestlerinin kaydettiği çekirdek ve paket sürümleriyle yeniden
 üretilebilir olmayı sürdürür. Yenileri, etiket kesildiğinde bu bildirimlerden
 [docs/reference-datasets.json](docs/reference-datasets.json) içindeki tohumlarla
 basılır. Motor PyPI'da [`mintmark`](https://pypi.org/project/mintmark/) olarak
-duruyor ve haftalık sabitleme kontrolü 0.2.0 orada yayımlanana kadar kırmızı
-kalıyor; bu da doğru: başkasının çekemediği bir çekirdek, başkasının
-denetleyemediği bir çekirdektir.
+duruyor. Haftalık sabitleme kontrolü vendor'lanmış wheel'i değişmez, denetlenmiş
+kaynak revizyonundan yeniden derler ve baytların birebir eşleşmesini zorunlu kılar.
 
 ## Topluluk sözleşmesi
 
