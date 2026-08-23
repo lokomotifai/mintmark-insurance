@@ -540,64 +540,147 @@ def test_the_clinical_denied_list_has_real_content() -> None:
         assert category in terms, f"the list omits {category!r}"
 
 
-def test_no_rendered_document_contains_denied_clinical_vocabulary(minted: Path) -> None:
-    """The boundary held in a real mint, not only in the templates.
+def test_no_emitted_value_contains_denied_clinical_vocabulary(
+    minted: Path, evaluation_mint: Path
+) -> None:
+    """The boundary holds across structured, baseline, and evaluation output.
 
-    A template that drifts into clinical detail still renders, still labels, and
-    still passes every other check. This is the control that would notice.
+    A field, lexicon, or template that drifts into clinical detail can still be
+    structurally valid. Scan every emitted string rather than trusting labels or
+    limiting the check to the two baseline document bodies.
     """
     from mintmark.lexicons import parse
 
     denied = parse("\n".join(f"{term}    # denied clinical vocabulary" for term in denied_terms()))
     offenders = []
-    for name in ("claim_note", "call_transcript"):
-        for line in (minted / f"{name}.jsonl").read_text(encoding="utf-8").splitlines():
-            if not line.strip():
+    for output in (minted, evaluation_mint):
+        for path in sorted(output.glob("*.jsonl")):
+            if path.name.endswith(".labels.jsonl"):
                 continue
-            body = json.loads(line)["body"]
-            for hit in denied.scan(body):
-                offenders.append(f"{name}: {hit.entry!r} in a rendered document")
+            for line in path.read_text(encoding="utf-8").splitlines():
+                if not line.strip():
+                    continue
+                record = json.loads(line)
+                for field, value in record.items():
+                    if not isinstance(value, str):
+                        continue
+                    for hit in denied.scan(value):
+                        offenders.append(f"{path.name}:{field}: {hit.entry!r}")
     assert not offenders, "\n".join(offenders[:10])
 
 
-def test_no_template_source_contains_denied_clinical_vocabulary() -> None:
-    """Catch it in the template rather than waiting for a draw to surface it."""
+def test_no_declaration_or_template_branch_contains_denied_clinical_vocabulary() -> None:
+    """Exhaust every bounded grammar branch and all string-emitting declarations."""
+    from mintmark.annotate import Label
+    from mintmark.engine.templates import (
+        Alternation,
+        EntitySlot,
+        FieldSlot,
+        IdentifierSlot,
+        LexiconSlot,
+        Literal,
+        Optional,
+        parse_template,
+    )
+    from mintmark.identifiers import ALL_ENGINES
     from mintmark.lexicons import parse
+    from mintmark.mint import core_descriptors
 
     denied = parse("\n".join(f"{term}    # denied clinical vocabulary" for term in denied_terms()))
-    text = "\n".join(
-        p.read_text(encoding="utf-8") for p in sorted((ROOT / "templates").rglob("*.yaml"))
+
+    def scalar_strings(value: object) -> list[str]:
+        if isinstance(value, str):
+            return [value]
+        if isinstance(value, dict):
+            return [text for nested in value.values() for text in scalar_strings(nested)]
+        if isinstance(value, (list, tuple)):
+            return [text for nested in value for text in scalar_strings(nested)]
+        return []
+
+    def literal_expansions(nodes: tuple[object, ...]) -> tuple[str, ...]:
+        outputs = [""]
+        for node in nodes:
+            if isinstance(node, Literal):
+                variants = (node.text,)
+            elif isinstance(node, (FieldSlot, EntitySlot, IdentifierSlot, LexiconSlot)):
+                variants = (" ",)
+            elif isinstance(node, Alternation):
+                variants = tuple(
+                    text for branch in node.branches for text in literal_expansions(branch)
+                )
+            elif isinstance(node, Optional):
+                variants = ("", *literal_expansions(node.body))
+            else:
+                raise AssertionError(f"unknown template node {node!r}")
+            assert len(outputs) * len(variants) <= 10_000
+            outputs = [prefix + suffix for prefix in outputs for suffix in variants]
+        return tuple(outputs)
+
+    surfaces: list[tuple[str, str]] = [
+        (f"lexicon {name}", value)
+        for name, values in PACK.lexicons.items()
+        for value in values
+    ]
+    surfaces.extend(
+        ("core HEALTH descriptor", value) for value in core_descriptors(Label.HEALTH)
     )
-    hits = [hit.entry for hit in denied.scan(text)]
-    assert not hits, f"a template carries denied clinical vocabulary: {hits}"
+    for record_type in PACK.record_types:
+        for field in record_type.fields:
+            surfaces.extend(
+                (f"field {record_type.type_name}.{field.name}", value)
+                for value in scalar_strings(field.params)
+            )
+    for set_name, entries in PACK.template_sets.items():
+        for entry in entries:
+            nodes = parse_template(
+                entry.text,
+                template_id=entry.id,
+                known_labels=frozenset(label.value for label in ALL_LABELS),
+                known_identifiers=frozenset(ALL_ENGINES),
+                known_lexicons=frozenset(PACK.lexicons),
+            )
+            surfaces.extend(
+                (f"template {set_name}/{entry.id}", text)
+                for text in literal_expansions(nodes)
+            )
+    offenders = [
+        f"{source}: {hit.entry!r}"
+        for source, surface in surfaces
+        for hit in denied.scan(surface)
+    ]
+    assert not offenders, "\n".join(offenders[:10])
 
 
-def test_every_health_span_draws_from_the_core_condition_classes(minted: Path) -> None:
+def test_every_health_span_draws_from_the_core_condition_classes(
+    minted: Path, evaluation_mint: Path
+) -> None:
     """Category granularity is enforced by where the surface comes from."""
     from mintmark.annotate import Label
     from mintmark.mint import core_descriptors
 
     allowed = set(core_descriptors(Label.HEALTH))
-    for sidecar in sorted(minted.glob("*.labels.jsonl")):
-        stem = sidecar.name.removesuffix(".labels.jsonl")
-        bodies = {
-            next(v for k, v in json.loads(line).items() if k.endswith("_id")): json.loads(line)[
-                "body"
-            ]
-            for line in (minted / f"{stem}.jsonl").read_text(encoding="utf-8").splitlines()
-            if line.strip()
-        }
-        for line in sidecar.read_text(encoding="utf-8").splitlines():
-            if not line.strip():
-                continue
-            record = json.loads(line)
-            text = bodies[record["doc_id"]]
-            for span in record["spans"]:
-                if span["label"] == "HEALTH":
-                    surface = text[span["start"] : span["end"]]
-                    assert surface in allowed, (
-                        f"a HEALTH span carries {surface!r}, which is not a curated condition class"
-                    )
+    for output in (minted, evaluation_mint):
+        for sidecar in sorted(output.glob("*.labels.jsonl")):
+            stem = sidecar.name.removesuffix(".labels.jsonl")
+            bodies = {
+                next(v for k, v in json.loads(line).items() if k.endswith("_id")): json.loads(line)[
+                    "body"
+                ]
+                for line in (output / f"{stem}.jsonl").read_text(encoding="utf-8").splitlines()
+                if line.strip()
+            }
+            for line in sidecar.read_text(encoding="utf-8").splitlines():
+                if not line.strip():
+                    continue
+                record = json.loads(line)
+                text = bodies[record["doc_id"]]
+                for span in record["spans"]:
+                    if span["label"] == "HEALTH":
+                        surface = text[span["start"] : span["end"]]
+                        assert surface in allowed, (
+                            f"a HEALTH span carries {surface!r}, which is not a curated "
+                            "condition class"
+                        )
 
 
 def test_the_denied_list_would_catch_a_planted_term() -> None:
@@ -744,7 +827,7 @@ def evaluation_mint(tmp_path_factory: pytest.TempPathFactory) -> Path:
             "claim": 80,
             "payment": 80,
             "claim_note_eval": 200,
-            "call_transcript_eval": 0,
+            "call_transcript_eval": 160,
         },
         invocation="pytest",
     )
