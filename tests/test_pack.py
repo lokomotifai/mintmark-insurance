@@ -18,7 +18,7 @@ import pytest
 import yaml
 from mintmark.annotate import ALL_LABELS
 from mintmark.lexicons import load as load_denylist
-from mintmark.mint import MintError, asset_dir, mint
+from mintmark.minting import MintError, asset_dir, mint
 from mintmark.packs.model import load_pack
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -590,7 +590,7 @@ def test_no_declaration_or_template_branch_contains_denied_clinical_vocabulary()
     )
     from mintmark.identifiers import ALL_ENGINES
     from mintmark.lexicons import parse
-    from mintmark.mint import core_descriptors
+    from mintmark.minting import core_descriptors
 
     denied = parse("\n".join(f"{term}    # denied clinical vocabulary" for term in denied_terms()))
 
@@ -655,7 +655,7 @@ def test_every_health_span_draws_from_the_core_condition_classes(
 ) -> None:
     """Category granularity is enforced by where the surface comes from."""
     from mintmark.annotate import Label
-    from mintmark.mint import core_descriptors
+    from mintmark.minting import core_descriptors
 
     allowed = set(core_descriptors(Label.HEALTH))
     for output in (minted, evaluation_mint):
